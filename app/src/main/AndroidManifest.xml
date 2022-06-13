@@ -18,7 +18,7 @@
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="Syka" />
+            android:value="Just a everyday utilities" />
         <meta-data
             android:name="xposedsharedprefs"
             android:value="true" />
