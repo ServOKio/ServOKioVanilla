@@ -3,9 +3,13 @@ package net.servokio.vanilla.ui.main.sub;
 import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,40 +20,26 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
-import net.servokio.vanilla.modules.Static;
 
-public class AAboutDevice extends AppCompatActivity {
+public class ACarrierLabel extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sub_about_device);
+        setContentView(R.layout.sub_carrier_label);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.about_phone, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.carrier_label, new SettingsFragment()).commit();
         }
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.settings_sub_about_device, rootKey);
-
-            Preference pref = findPreference("android_version");
-            if(pref != null){
-                pref.setTitle(Static.currentVersion());
-                pref.setSummary(Static.getSystemProperty("ro.system.build.fingerprint"));
-            }
-
-            pref = findPreference("ctx_dir");
-            if(pref != null){
-                pref.setTitle("Context dir");
-                pref.setSummary(getContext().getFilesDir().getAbsolutePath());
-            }
+            setPreferencesFromResource(R.xml.settings_sub_carrier_label, rootKey);
         }
 
         @Override
@@ -61,9 +51,20 @@ public class AAboutDevice extends AppCompatActivity {
                 if (ActivityCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     phoneBlock.findViewById(R.id.imageView4).setVisibility(View.GONE);
                 } else {
-                    final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-                    ImageView imageView = phoneBlock.findViewById(R.id.imageView4);
-                    imageView.setImageDrawable(wallpaperDrawable);
+                    if (Build.VERSION.SDK_INT >= 24){
+                        ParcelFileDescriptor pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_LOCK);
+                        if (pfd == null) pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM);
+                        if (pfd != null) {
+                            final Bitmap result = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
+                            try {
+                                pfd.close();
+                                ImageView imageView = phoneBlock.findViewById(R.id.imageView4);
+                                imageView.setImageDrawable(new BitmapDrawable(getResources(), result));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
                 Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
                 phoneBlock.setAlpha(1);

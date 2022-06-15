@@ -6,6 +6,7 @@
         android:enabled="false"
         android:layout="@layout/status_bar_header" />
     <Preference
+        android:key="carrier_label"
         android:title="@string/settings_status_bar_carrier_title"
         android:summary="@string/settings_status_bar_carrier_desk"
         android:icon="@drawable/rr_carrier_label_icon"

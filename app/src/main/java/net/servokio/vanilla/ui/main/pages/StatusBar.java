@@ -2,6 +2,7 @@ package net.servokio.vanilla.ui.main.pages;
 
 import android.Manifest;
 import android.app.WallpaperManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +23,8 @@ import android.widget.ImageView;
 
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
+import net.servokio.vanilla.ui.main.sub.ACarrierLabel;
+import net.servokio.vanilla.ui.main.sub.ALockScreenUI;
 
 public class StatusBar extends Fragment {
     private FragmentManager fm;
@@ -58,6 +62,12 @@ public class StatusBar extends Fragment {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.settings_status_bar, rootKey);
+
+            Preference pref = findPreference("carrier_label");
+            if (pref != null) pref.setOnPreferenceClickListener(e -> {
+                startActivity(new Intent(getContext(), ACarrierLabel.class));
+                return true;
+            });
         }
 
     //        @MainThread

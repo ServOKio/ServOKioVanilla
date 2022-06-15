@@ -1,0 +1,15 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:enabled="false"
+        android:layout="@layout/header_carrier_label" />
+    <ListPreference
+        app:defaultValue="3"
+        app:entries="@array/carrier_label_entries"
+        app:entryValues="@array/carrier_label_values"
+        app:key="carrier_label"
+        app:title="Carrier label"
+        app:icon="@drawable/rr_position_icon"
+        app:useSimpleSummaryProvider="true" />
+</PreferenceScreen>

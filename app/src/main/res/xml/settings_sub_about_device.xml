@@ -7,6 +7,12 @@
         android:key="android_version"
         android:selectable="true"
         android:icon="@drawable/ic_android"
-        android:summary="Настроить различные шрифты и цвета часов экрана блокировки"
-        android:title="Стиль экрана блокировки" />
+        android:summary="Android version"
+        android:title="Rom desk" />
+    <Preference
+        android:key="ctx_dir"
+        android:selectable="true"
+        android:icon="@drawable/ic_find_in_page_24px"
+        android:summary="Android version"
+        android:title="Rom desk" />
 </PreferenceScreen>

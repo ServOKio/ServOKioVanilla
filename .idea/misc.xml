@@ -105,6 +105,7 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_up_time_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_vendor_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/activity_main.xml" value="0.4666666666666667" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_carrier_label.xml" value="0.5362318840579711" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_lock_screen.xml" value="0.2713541666666667" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_lock_screen_ui.xml" value="0.5541666666666667" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_miscellaneous.xml" value="0.2755208333333333" />
@@ -115,6 +116,7 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/status_bar.xml" value="0.44972826086956524" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/status_bar_header.xml" value="0.5" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/sub_about_device.xml" value="0.31354166666666666" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/sub_carrier_label.xml" value="0.5362318840579711" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/sub_lock_screen_ui.xml" value="0.5541666666666667" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/menu/menu_main.xml" value="0.24114583333333334" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/miscellaneous.xml" value="0.2765625" />
@@ -124,6 +126,7 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_miscellaneous.xml" value="0.2765625" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_status_bar.xml" value="0.27239583333333334" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_about_device.xml" value="0.31354166666666666" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_carrier_label.xml" value="0.5362318840579711" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_lock_screen_ui.xml" value="0.5541666666666667" />
       </map>
     </option>

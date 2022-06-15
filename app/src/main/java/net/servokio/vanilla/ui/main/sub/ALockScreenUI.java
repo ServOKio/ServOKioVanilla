@@ -3,8 +3,13 @@ package net.servokio.vanilla.ui.main.sub;
 import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,9 +53,20 @@ public class ALockScreenUI extends AppCompatActivity {
                 if (ActivityCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     phoneBlock.findViewById(R.id.imageView4).setVisibility(View.GONE);
                 } else {
-                    final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-                    ImageView imageView = phoneBlock.findViewById(R.id.imageView4);
-                    imageView.setImageDrawable(wallpaperDrawable);
+                    if (Build.VERSION.SDK_INT >= 24){
+                        ParcelFileDescriptor pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_LOCK);
+                        if (pfd == null) pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM);
+                        if (pfd != null) {
+                            final Bitmap result = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
+                            try {
+                                pfd.close();
+                                ImageView imageView = phoneBlock.findViewById(R.id.imageView4);
+                                imageView.setImageDrawable(new BitmapDrawable(getResources(), result));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
                 Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
                 phoneBlock.setAlpha(1);

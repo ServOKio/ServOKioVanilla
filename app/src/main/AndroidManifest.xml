@@ -59,6 +59,20 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.main.sub.ACarrierLabel"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="xposedmodule"
