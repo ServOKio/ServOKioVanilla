@@ -1,0 +1,12 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:enabled="false"
+        android:layout="@layout/header_sub_about_phone" />
+    <Preference
+        android:key="android_version"
+        android:selectable="true"
+        android:icon="@drawable/ic_android"
+        android:summary="Настроить различные шрифты и цвета часов экрана блокировки"
+        android:title="Стиль экрана блокировки" />
+</PreferenceScreen>

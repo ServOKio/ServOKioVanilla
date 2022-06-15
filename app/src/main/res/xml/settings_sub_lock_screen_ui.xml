@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:enabled="false"
+        android:layout="@layout/header_lock_screen_ui" />
+        <PreferenceCategory app:title="Clock master switch">
+            <SwitchPreferenceCompat
+                app:key="lockscreen_clock"
+                app:icon="@drawable/rr_visib_icon"
+                app:defaultValue="true"
+                app:title="Show lockscreen clock &amp; date"
+                app:summary="Show/hide entire clock &amp; date view on lockscreen"
+                />
+        </PreferenceCategory>
+</PreferenceScreen>

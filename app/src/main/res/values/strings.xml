@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">ServOKioVanilla</string>
+    <string name="app_name" translatable="false">Vanilla</string>
+    <string name="tab_status_bar">Status bar</string>
+    <string name="tab_panels">Panels</string>
+    <string name="tab_system">System</string>
+    <string name="tab_interface">Interface</string>
+    <string name="tab_lock_screen">Lock screen</string>
+    <string name="tab_animations">Animations</string>
+    <string name="tab_miscellaneous">Miscellaneous</string>
+    <string name="settings_status_bar_carrier_desk">Enable or disable carrier label in statusbar and customise its style</string>
+    <string name="settings_status_bar_carrier_title">Carrier label</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

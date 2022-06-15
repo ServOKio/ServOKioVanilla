@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="net.servokio.vanilla">
+    <queries>
+        <package android:name="com.android.systemui" />
+    </queries>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,19 +16,62 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ServOKioVanilla"
+        android:theme="@style/Theme.Vanilla"
         tools:targetApi="31">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Vanilla.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.main.sub.AAboutDevice"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.main.sub.ALockScreenUI"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
         <meta-data
-            android:name="xposeddescription"
-            android:value="Just a everyday utilities" />
-        <meta-data
             android:name="xposedsharedprefs"
             android:value="true" />
         <meta-data
+            android:name="xposeddescription"
+            android:value="Phone settings as line in the RR firmware" />
+        <meta-data
             android:name="xposedminversion"
-            android:value="82" />
+            android:value="53" />
     </application>
+
 </manifest>

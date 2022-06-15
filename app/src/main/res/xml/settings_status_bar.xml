@@ -1,0 +1,37 @@
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="status_bar_header"
+        android:enabled="false"
+        android:layout="@layout/status_bar_header" />
+    <Preference
+        android:title="@string/settings_status_bar_carrier_title"
+        android:summary="@string/settings_status_bar_carrier_desk"
+        android:icon="@drawable/rr_carrier_label_icon"
+        />
+<!--    <PreferenceCategory app:title="Hello">-->
+<!--        <EditTextPreference-->
+<!--            app:key="signature"-->
+<!--            app:title="Hello"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+<!--&lt;!&ndash;        <ListPreference&ndash;&gt;-->
+<!--&lt;!&ndash;            app:defaultValue="reply"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:entries="@array/reply_entries"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:entryValues="@array/reply_values"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:key="reply"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:title="@string/reply_title"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:useSimpleSummaryProvider="true" />&ndash;&gt;-->
+<!--    </PreferenceCategory>-->
+<!--    <PreferenceCategory app:title="Hello">-->
+<!--        <SwitchPreferenceCompat-->
+<!--            app:key="sync"-->
+<!--            app:title="Hello" />-->
+<!--        <SwitchPreferenceCompat-->
+<!--            app:dependency="sync"-->
+<!--            app:key="attachment"-->
+<!--            app:summaryOff="Hello"-->
+<!--            app:summaryOn="Hello"-->
+<!--            app:title="Hello" />-->
+<!--    </PreferenceCategory>-->
+</PreferenceScreen>

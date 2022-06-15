@@ -1,0 +1,12 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="header_miscellaneous"
+        android:enabled="false"
+        android:layout="@layout/header_miscellaneous" />
+    <Preference
+        android:key="about_device"
+        android:icon="@drawable/rr_about_icon"
+        android:summary="About device"
+        android:title="System info" />
+</PreferenceScreen>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_status_bar">Строка состояния</string>
+    <string name="tab_panels">Панели</string>
+    <string name="tab_system">Система</string>
+    <string name="tab_lock_screen">Экран блокировки</string>
+    <string name="tab_interface">Интерфейс</string>
+    <string name="tab_miscellaneous">Прочее</string>
+    <string name="tab_animations">Анимации</string>
+    <string name="settings_status_bar_carrier_desk">Включение или отключение названия оператора в строке состояния и настройка его стиля</string>
+    <string name="settings_status_bar_carrier_title">Название оператора</string>
+</resources>

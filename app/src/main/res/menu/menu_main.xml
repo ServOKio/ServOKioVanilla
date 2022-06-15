@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/sd_card"
+        android:title="External storage access"
+        android:icon="@drawable/ic_baseline_sd_card_24"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/xposed"
+        android:title="Xposed enable"
+        android:icon="@drawable/ic_ota_update_none"
+        app:showAsAction="ifRoom" />
+</menu>
