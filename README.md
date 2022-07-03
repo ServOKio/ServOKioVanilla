@@ -3,11 +3,11 @@
 <br/>
 <br/>
 <div style="display: flex;justify-content: space-between;">
-<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_212200.png" height="430px"/>
-<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_211828.png" height="430px"/>
-<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_212128.png" height="430px"/>
-<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_212140.png" height="430px"/>
-<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_212217.png" height="430px"/>
+<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_212200.png" height="330px"/>
+<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_211828.png" height="330px"/>
+<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_212128.png" height="330px"/>
+<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_212140.png" height="330px"/>
+<img src="https://raw.githubusercontent.com/ServOKio/Vanilla/main/screenshots/Screenshot_20220703_212217.png" height="330px"/>
 </div>
 
 ## About
