@@ -12,12 +12,17 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_cellular_off.xml" value="0.248" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_custom_seekbar_reset.xml" value="0.248" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_devices_check_circle_green.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_disabled.xml" value="0.3175" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_discord.xml" value="0.3165" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_discord_logo_white.xml" value="0.3175" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_event.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_find_in_page_24px.xml" value="0.5475" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_fingerprint_list_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_gaming_nav.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_homepage_about.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_homepage_connected_device.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_label.xml" value="0.248" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3175" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_lock_list_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_notification_alert.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_notification_block.xml" value="0.277" />
@@ -29,6 +34,7 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_pin.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_preference_location.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_settings_development.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_settings_evolution.xml" value="0.3165" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_settings_nfc_payment.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_shortcut_battery.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/ic_shortcut_data_usage.xml" value="0.277" />
@@ -43,8 +49,10 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_accent_icon_nav.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_account_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_act_open_icon.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_android_icon.xml" value="0.245" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_animations_icon_nav.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_autoenable_icon.xml" value="0.4205" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_bass_icon.xml" value="0.281" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_battery_bar_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_battery_bar_icon_nav.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_battery_cancel_icon.xml" value="0.4205" />
@@ -61,8 +69,10 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_change_icon.xml" value="0.248" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_charging_icon_nav.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_chargingsounds_icons.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_clock_icon.xml" value="0.3175" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_clock_icon_nav.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_clock_icon_version.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_color_icon.xml" value="0.3175" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_dashboard_icon_nav.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_dashboard_main_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_device_model_icon.xml" value="0.277" />
@@ -72,6 +82,9 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_feedback_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_fw_version_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_google_play_icon.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_header_enable_icon.xml" value="0.245" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_header_header_enable_icon.xml" value="0.245" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_header_statusbar_icon.xml" value="0.245" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_imei_info_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_info_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_info_settings_icon.xml" value="0.277" />
@@ -80,16 +93,20 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_ip_info_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_kernel_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_legal_info_icon.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_lock_icon.xml" value="0.245" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_mac_add_icon.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_main_conf_db_icon.xml" value="0.3175" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_main_conf_shortcut_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_main_conf_shortcut_icon_primay.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_main_conf_spacer_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_maintainer_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_manual_icon.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_misc_preview_icon.xml" value="0.245" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_ota_icon_fab.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_ota_icon_nav.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_ph_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_ph_icon_2.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_qs_layout_icon.xml" value="0.5475" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_regulatory_info_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_reset_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_restart_ui_icon.xml" value="0.277" />
@@ -99,35 +116,60 @@
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_sim_status_icon_2.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_spacer.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_spacer_main_icon.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_statusbar_icon.xml" value="0.3085" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_suspend_icon.xml" value="0.388" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_text_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_text_icon_about.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_tools_fab_toggle.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_up_time_icon.xml" value="0.277" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_vendor_icon.xml" value="0.277" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/drawable/rr_visib_icon.xml" value="0.245" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout-v24/just_a_test.xml" value="0.2765625" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout-v24/preference_custom_preview_image.xml" value="0.33" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout-v24/preference_custom_seekbar.xml" value="0.6518518518518519" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout-v24/presence_custom_preview_image.xml" value="0.447463768115942" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/about_app.xml" value="0.31354166666666666" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/activity_main.xml" value="0.4666666666666667" />
-        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_carrier_label.xml" value="0.5362318840579711" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/fragment_main.xml" value="0.5226449275362319" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_about_app.xml" value="0.25726495726495724" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_carrier_label.xml" value="0.19523809523809524" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_header_lol.xml" value="0.23854166666666668" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_image.xml" value="0.2755208333333333" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_lock_screen.xml" value="0.2713541666666667" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_lock_screen_ui.xml" value="0.5541666666666667" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_miscellaneous.xml" value="0.2755208333333333" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_panels.xml" value="0.4166666666666667" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/header_sub_about_phone.xml" value="0.5541666666666667" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/just_a_test.xml" value="0.3807291666666667" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/lock_screen.xml" value="0.27239583333333334" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/miscellaneous.xml" value="0.2765625" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/null_page.xml" value="0.6328963051251489" />
-        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/status_bar.xml" value="0.44972826086956524" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/panels.xml" value="0.4166666666666667" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/preference_custom_preview_image.xml" value="0.5" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/preference_custom_seekbar.xml" value="0.31354166666666666" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/presence_custom_preview_image.xml" value="0.447463768115942" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/status_bar.xml" value="0.25" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/status_bar_header.xml" value="0.5" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/sub_about_device.xml" value="0.31354166666666666" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/sub_carrier_label.xml" value="0.5362318840579711" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/sub_header.xml" value="0.23854166666666668" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/layout/sub_lock_screen_ui.xml" value="0.5541666666666667" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/menu/menu_main.xml" value="0.24114583333333334" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml-v26/about_app.xml" value="0.5541666666666667" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml-v26/settings_sub_carrier_label.xml" value="0.3145833333333333" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/about_app.xml" value="0.31354166666666666" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/just_a_test.xml" value="0.2765625" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/miscellaneous.xml" value="0.2765625" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/root_preferences.xml" value="0.36907216494845363" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/searchable.xml" value="0.3145833333333333" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_lockscreen.xml" value="0.27239583333333334" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_miscellaneous.xml" value="0.2765625" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_panels.xml" value="0.41770833333333335" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_status_bar.xml" value="0.27239583333333334" />
-        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_about_device.xml" value="0.31354166666666666" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_about_device.xml" value="0.14497041420118342" />
         <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_carrier_label.xml" value="0.5362318840579711" />
-        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_lock_screen_ui.xml" value="0.5541666666666667" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_header.xml" value="0.19066147859922178" />
+        <entry key="..\:/PC2/documents/android/Vanilla/app/src/main/res/xml/settings_sub_lock_screen_ui.xml" value="0.33" />
       </map>
     </option>
   </component>

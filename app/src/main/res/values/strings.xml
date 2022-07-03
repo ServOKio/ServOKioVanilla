@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">Vanilla</string>
     <string name="tab_status_bar">Status bar</string>
     <string name="tab_panels">Panels</string>
@@ -9,5 +9,7 @@
     <string name="tab_miscellaneous">Miscellaneous</string>
     <string name="settings_status_bar_carrier_desk">Enable or disable carrier label in statusbar and customise its style</string>
     <string name="settings_status_bar_carrier_title">Carrier label</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="custom_seekbar_default_value">Default</string>
+    <string name="custom_seekbar_value">Value: <xliff:g id="v">%s</xliff:g></string>
+    <string name="custom_seekbar_default_value_to_set">Default value: <xliff:g id="v">%s</xliff:g>\nLong press to set</string>
 </resources>

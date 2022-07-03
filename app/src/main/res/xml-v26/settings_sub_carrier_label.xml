@@ -1,0 +1,49 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:settings="http://schemas.android.com/tools">
+    <Preference
+        android:enabled="false"
+        android:layout="@layout/header_carrier_label" />
+    <ListPreference
+        app:defaultValue="3"
+        app:entries="@array/carrier_label_entries"
+        app:entryValues="@array/carrier_label_values"
+        app:key="carrier_label"
+        app:title="Carrier label"
+        app:icon="@drawable/rr_position_icon"
+        app:useSimpleSummaryProvider="true" />
+    <PreferenceCategory
+        app:title="General UI"
+        >
+        <EditTextPreference
+            app:key="carrier_label_text"
+            app:title="Custom carrier label"
+            app:summary="Custom label currently not set"
+            app:icon="@drawable/rr_custom_carrier_label_icon"
+            app:dialogMessage="Please enter a new label. Leave black to revert to stock label."
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:key="carrier_label_font_style"
+            android:title="Font style"
+            android:icon="@drawable/rr_font_size_icon"
+            android:summary="%s"
+            android:defaultValue="" />
+        <net.servokio.vanilla.preferences.SystemSettingColorPickerPreference
+            android:key="carrier_label_color"
+            android:defaultValue="0xffffffff"
+            app:cpv_showAlphaSlider="false"
+            app:iconSpaceReserved="false"
+            app:cpv_dialogType="custom"
+            app:title="Color"
+            app:icon="@drawable/rr_color_icon"
+            />
+        <net.servokio.vanilla.preferences.CustomSeekBarPreference
+            android:key="status_bar_carrier_label_font_size"
+            android:title="Font size"
+            android:icon="@drawable/rr_immersive_icon"
+            android:max="23"
+            android:min="8"
+            android:defaultValue="14"
+            settings:units="sp" />
+    </PreferenceCategory>
+</PreferenceScreen>

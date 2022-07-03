@@ -11,10 +11,8 @@
     >
 
     <FrameLayout
-        android:id="@+id/phone_animate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0">
+        android:layout_height="match_parent">
         <androidx.cardview.widget.CardView
             android:layout_width="164dp"
             android:layout_height="337dp"
@@ -27,8 +25,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background" />
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:id="@+id/black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:orientation="horizontal"/>
+
         </androidx.cardview.widget.CardView>
 
         <ImageView
@@ -42,6 +47,6 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal|center_vertical"
-            app:srcCompat="@drawable/rr_carrier_label_icon" />
+            app:srcCompat="@drawable/rr_header_statusbar_icon" />
     </FrameLayout>
 </LinearLayout>

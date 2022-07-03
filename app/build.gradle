@@ -10,7 +10,7 @@ android {
         minSdk 22
         targetSdk 32
         versionCode 1
-        versionName "1.1"
+        versionName "1.2"
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -50,4 +50,11 @@ dependencies {
 
     //lsposed
     compileOnly 'de.robv.android.xposed:api:82'
+
+    //colorPicker
+    implementation 'com.jaredrummler:colorpicker:1.1.0'
+
+    //imageLib
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tab_status_bar">Строка состояния</string>
     <string name="tab_panels">Панели</string>
     <string name="tab_system">Система</string>
@@ -9,4 +9,7 @@
     <string name="tab_animations">Анимации</string>
     <string name="settings_status_bar_carrier_desk">Включение или отключение названия оператора в строке состояния и настройка его стиля</string>
     <string name="settings_status_bar_carrier_title">Название оператора</string>
+    <string name="custom_seekbar_default_value">Стандарт</string>
+    <string name="custom_seekbar_value">Значение: <xliff:g id="v">%s</xliff:g></string>
+    <string name="custom_seekbar_default_value_to_set">Стандартное значение: <xliff:g id="v">%s</xliff:g>\nДолгое нажатие для сброса</string>
 </resources>

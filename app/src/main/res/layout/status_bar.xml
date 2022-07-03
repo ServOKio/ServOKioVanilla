@@ -9,5 +9,4 @@
     android:textAlignment="gravity"
     tools:context=".ui.main.pages.StatusBar"
     android:id="@+id/settings_status_bar"
-    >
-</FrameLayout>
+    />

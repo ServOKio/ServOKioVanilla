@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
@@ -75,20 +76,26 @@ public class Miscellaneous extends Fragment {
         @Override
         public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
             RecyclerView recyclerView = super.onCreateRecyclerView(inflater, parent, savedInstanceState);
-
             recyclerView.post(() -> {
-                View phoneBlock = getListView().findViewById(R.id.phone_animate);
+                ImageView imageView = getListView().findViewById(R.id.imageView4);
                 final WallpaperManager wallpaperManager = WallpaperManager.getInstance(MainActivity.getInstance());
-                if (ActivityCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    phoneBlock.findViewById(R.id.imageView4).setVisibility(View.GONE);
-                } else {
+                if (ActivityCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-                    ImageView imageView = phoneBlock.findViewById(R.id.imageView4);
                     imageView.setImageDrawable(wallpaperDrawable);
+                    Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.test);
+                    imageView.startAnimation(animation);
+                    LinearLayout l = getListView().findViewById(R.id.black);
+                    Animation opa = AnimationUtils.loadAnimation(getContext(), R.anim.opacity);
+                    opa.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+                        @Override
+                        public void onAnimationEnd(Animation animation) {l.setAlpha(0);}
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
+                    l.startAnimation(opa);
                 }
-                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-                phoneBlock.setAlpha(1);
-                phoneBlock.startAnimation(animation);
             });
             return recyclerView;
         }

@@ -1,15 +1,31 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:settings="http://schemas.android.com/tools">
     <Preference
         android:enabled="false"
         android:layout="@layout/header_lock_screen_ui" />
-        <PreferenceCategory app:title="Clock master switch">
-            <SwitchPreferenceCompat
-                app:key="lockscreen_clock"
-                app:icon="@drawable/rr_visib_icon"
-                app:defaultValue="true"
-                app:title="Show lockscreen clock &amp; date"
-                app:summary="Show/hide entire clock &amp; date view on lockscreen"
-                />
-        </PreferenceCategory>
+    <SwitchPreferenceCompat
+        app:key="lockscreen_wallpaper_zoom"
+        app:icon="@drawable/rr_screenshot_icon"
+        app:defaultValue="true"
+        app:title="Wallpaper zoom animation"
+        app:summary="Disable/enable lockscreen wallpaper zoom animation"
+        />
+    <net.servokio.vanilla.preferences.CustomSeekBarPreference
+        android:key="lockscreen_bg_opacity"
+        android:title="Background opacity"
+        android:icon="@drawable/rr_tuner_parts_activity_icon"
+        android:max="100"
+        settings:min="0"
+        android:defaultValue="55"
+        settings:units="%" />
+    <PreferenceCategory app:title="Clock master switch">
+        <SwitchPreferenceCompat
+            app:key="lockscreen_clock"
+            app:icon="@drawable/rr_visib_icon"
+            app:defaultValue="true"
+            app:title="Show lockscreen clock &amp; date"
+            app:summary="Show/hide entire clock &amp; date view on lockscreen"
+            />
+    </PreferenceCategory>
 </PreferenceScreen>

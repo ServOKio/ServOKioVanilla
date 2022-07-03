@@ -7,7 +7,6 @@
         <package android:name="com.android.systemui" />
     </queries>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -73,6 +72,34 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.main.sub.AHeader"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.main.pages.AboutApp"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="xposedmodule"
@@ -86,6 +113,10 @@
         <meta-data
             android:name="xposedminversion"
             android:value="53" />
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@array/hooked_apps" />
+
     </application>
 
 </manifest>

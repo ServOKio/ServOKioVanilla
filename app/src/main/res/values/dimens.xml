@@ -9,4 +9,5 @@
     <dimen name="dashboard_tile_image_size">123</dimen>
     <dimen name="dashboard_tile_foreground_image_size">123</dimen>
     <dimen name="dashboard_tile_foreground_image_inset">123</dimen>
+    <dimen name="quick_qs_offset_height">1000dp</dimen>
 </resources>

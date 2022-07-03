@@ -16,15 +16,22 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
+import net.servokio.vanilla.modules.FontListParser;
+import net.servokio.vanilla.modules.Static;
+
+import java.util.List;
 
 public class ACarrierLabel extends AppCompatActivity {
     @Override
@@ -40,35 +47,56 @@ public class ACarrierLabel extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.settings_sub_carrier_label, rootKey);
+
+            ListPreference pref = findPreference("carrier_label_font_style");
+            if(pref != null){
+                List<FontListParser.SystemFont> fonts;
+                try {
+                    fonts = FontListParser.getSystemFonts();
+                } catch (Exception e) {
+                    pref.setDialogMessage("Sys error: "+e.getMessage());
+                    fonts = FontListParser.safelyGetSystemFonts();
+                }
+                CharSequence[] entries = new String[fonts.size() + 1];
+                entries[0] = "Normal (default)";
+                CharSequence[] entryValues = new String[fonts.size() + 1];
+                entryValues[0] = "";
+                for (int i = 0; i < fonts.size(); i++) {
+                    entries[i+1] = fonts.get(i).formated;
+                    entryValues[i+1] = fonts.get(i).path;
+                }
+                pref.setEntries(entries);
+                pref.setEntryValues(entryValues);
+            }
         }
 
         @Override
         public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
             RecyclerView recyclerView = super.onCreateRecyclerView(inflater, parent, savedInstanceState);
             recyclerView.post(() -> {
-                View phoneBlock = getListView().findViewById(R.id.phone_animate);
                 final WallpaperManager wallpaperManager = WallpaperManager.getInstance(MainActivity.getInstance());
-                if (ActivityCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    phoneBlock.findViewById(R.id.imageView4).setVisibility(View.GONE);
-                } else {
-                    if (Build.VERSION.SDK_INT >= 24){
-                        ParcelFileDescriptor pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_LOCK);
-                        if (pfd == null) pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM);
-                        if (pfd != null) {
-                            final Bitmap result = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
-                            try {
-                                pfd.close();
-                                ImageView imageView = phoneBlock.findViewById(R.id.imageView4);
-                                imageView.setImageDrawable(new BitmapDrawable(getResources(), result));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
+                if (Build.VERSION.SDK_INT >= 24 && ActivityCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    ParcelFileDescriptor pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_LOCK);
+                    if (pfd == null) pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM);
+                    if (pfd != null) {
+                        ImageView imageView = getListView().findViewById(R.id.imageView4);
+                        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+                        imageView.setImageDrawable(wallpaperDrawable);
+                        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.test);
+                        imageView.startAnimation(animation);
+                        LinearLayout l = getListView().findViewById(R.id.black);
+                        Animation opa = AnimationUtils.loadAnimation(getContext(), R.anim.opacity);
+                        opa.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {}
+                            @Override
+                            public void onAnimationEnd(Animation animation) {l.setAlpha(0);}
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {}
+                        });
+                        l.startAnimation(opa);
                     }
                 }
-                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-                phoneBlock.setAlpha(1);
-                phoneBlock.startAnimation(animation);
             });
             return recyclerView;
         }

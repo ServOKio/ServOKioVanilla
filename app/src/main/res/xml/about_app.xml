@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:key="header_about_app"
+        android:enabled="false"
+        android:layout="@layout/header_about_app" />
+    <Preference
+        android:title="What is Vanilla ?"
+        app:summary="Vanilla - plugin for xposed to customize your android device. I'm trying to port functions from Resurrection Remix os and Evolution os for use even on vanilla AOSP firmware"/>
+    <PreferenceCategory
+        app:title="Thanks">
+        <Preference
+            android:title="rushii#4723"
+            app:summary="Discord 295190422244950017"/>
+        <Preference
+            android:title="Ven#8485"
+            app:summary="Discord 343383572805058560"/>
+    </PreferenceCategory>
+</PreferenceScreen>

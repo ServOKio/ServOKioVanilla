@@ -10,4 +10,7 @@
 
     <color name="main_theme">#FF74b0e7</color>
     <color name="theme_dark">#121212</color>
+    <color name="disabled_text_color">#887157</color>
+
+    <color name="settings_header_icon">#FFFFFFFF</color>
 </resources>

@@ -12,6 +12,7 @@ import net.servokio.vanilla.R;
 import net.servokio.vanilla.ui.main.pages.LockScreen;
 import net.servokio.vanilla.ui.main.pages.Miscellaneous;
 import net.servokio.vanilla.ui.main.pages.NullPage;
+import net.servokio.vanilla.ui.main.pages.Panels;
 import net.servokio.vanilla.ui.main.pages.StatusBar;
 
 /**
@@ -46,6 +47,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0:
                 return new StatusBar(this.fm);
+            case 1:
+                return new Panels(this.fm);
             case 4:
                 return new LockScreen(this.fm);
             case 6:

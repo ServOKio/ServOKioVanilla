@@ -13,6 +13,36 @@
         android:key="ctx_dir"
         android:selectable="true"
         android:icon="@drawable/ic_find_in_page_24px"
-        android:summary="Android version"
-        android:title="Rom desk" />
+        android:summary="dir"
+        android:title="Context dir" />
+    <Preference
+        android:key="build_manufacturer"
+        android:selectable="true"
+        android:icon="@drawable/rr_ls_ui_icon"
+        android:title="Build manufacturer"
+        android:summary="un" />
+    <Preference
+        android:key="build_display"
+        android:selectable="true"
+        android:icon="@drawable/rr_themes_icon"
+        android:title="Build display"
+        android:summary="un" />
+    <Preference
+        android:key="build_hardware"
+        android:selectable="true"
+        android:icon="@drawable/rr_memory_icon"
+        android:title="Build hardware"
+        android:summary="un" />
+    <Preference
+        android:key="build_device"
+        android:selectable="true"
+        android:icon="@drawable/rr_suspend_icon"
+        android:title="Build device"
+        android:summary="un" />
+    <Preference
+        android:key="settings_accent_color"
+        android:selectable="true"
+        android:icon="@drawable/rr_accent_icon"
+        android:title="Accent color"
+        android:summary="un" />
 </PreferenceScreen>

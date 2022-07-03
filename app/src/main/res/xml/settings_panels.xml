@@ -1,0 +1,14 @@
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="header_panels"
+        android:enabled="false"
+        android:layout="@layout/header_panels" />
+    <Preference
+        android:key="header"
+        android:title="Header"
+        android:summary="Customise the header"
+        android:icon="@drawable/rr_header_icon"
+        />
+</PreferenceScreen>
