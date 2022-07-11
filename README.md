@@ -1,5 +1,6 @@
 <h1 align="center">Vanilla</h1>
 <p align="center">Just utilities for android customization</p>
+<p align="center">currently only on android 11</p>
 <br/>
 <br/>
 <div style="display: flex;justify-content: space-between;">
