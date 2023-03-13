@@ -27,6 +27,8 @@ import android.widget.LinearLayout;
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
 import net.servokio.vanilla.ui.main.sub.AAboutDevice;
+import net.servokio.vanilla.ui.main.sub.BLockscreenPreview;
+import net.servokio.vanilla.ui.main.utils.WallpaperEditor;
 
 public class Miscellaneous extends Fragment {
     private FragmentManager fm;
@@ -69,6 +71,12 @@ public class Miscellaneous extends Fragment {
             Preference pref = findPreference("about_device");
             if (pref != null) pref.setOnPreferenceClickListener(e -> {
                 startActivity(new Intent(getContext(), AAboutDevice.class));
+                return true;
+            });
+
+            pref = findPreference("wallpaper_editor");
+            if (pref != null) pref.setOnPreferenceClickListener(e -> {
+                startActivity(new Intent(getContext(), WallpaperEditor.class));
                 return true;
             });
         }

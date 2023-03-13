@@ -9,4 +9,9 @@
         android:icon="@drawable/rr_about_icon"
         android:summary="About device"
         android:title="System info" />
+    <Preference
+        android:key="wallpaper_editor"
+        android:icon="@drawable/ic_theme"
+        android:summary="Edit image and save"
+        android:title="Wallpaper editor" />
 </PreferenceScreen>

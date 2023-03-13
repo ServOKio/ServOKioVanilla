@@ -1,0 +1,71 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:settings="http://schemas.android.com/tools">
+    <Preference
+        android:enabled="false"
+        android:layout="@layout/header_quick_settings" />
+    <PreferenceCategory
+        android:key="qs_clock"
+        android:title="QS clock">
+
+        <SwitchPreference
+            android:key="show_qs_clock"
+            android:icon="@drawable/rr_clock_icon"
+            android:title="Clock"
+            android:summary="Display clock in quick status bar header"
+            android:defaultValue="true" />
+        <!--        <Preference-->
+        <!--            android:key="custom_header_browse"-->
+        <!--            android:icon="@drawable/rr_search_icon"-->
+        <!--            android:title="@string/custom_header_browse_title"-->
+        <!--            android:persistent="false"-->
+        <!--            android:dependency="status_bar_custom_header" >-->
+        <!--            <intent android:action="android.intent.action.MAIN"-->
+        <!--                android:targetPackage="org.omnirom.omnistyle"-->
+        <!--                android:targetClass="org.omnirom.omnistyle.PickHeaderActivity" />-->
+        <!--        </Preference>-->
+
+        <!--        <Preference-->
+        <!--            android:key="custom_header_browse"-->
+        <!--            android:icon="@drawable/rr_search_icon"-->
+        <!--            android:title="@string/custom_header_browse_title"-->
+        <!--            android:persistent="false"-->
+        <!--            android:dependency="status_bar_custom_header" >-->
+        <!--            <intent android:action="android.intent.action.MAIN"-->
+        <!--                android:targetPackage="org.omnirom.omnistyle"-->
+        <!--                android:targetClass="org.omnirom.omnistyle.PickHeaderActivity" />-->
+        <!--        </Preference>-->
+
+
+        <net.servokio.vanilla.preferences.CustomSeekBarPreference
+            android:key="qs_header_clock_size"
+            android:title="Font size"
+            android:icon="@drawable/rr_immersive_icon"
+            android:dependency="show_qs_clock"
+            android:max="80"
+            settings:min="8"
+            android:defaultValue="14"
+            settings:units="sp"/>
+
+        <net.servokio.vanilla.preferences.SystemSettingColorPickerPreference
+            android:key="qs_header_clock_color"
+            android:defaultValue="0xffffffff"
+            app:cpv_showAlphaSlider="false"
+            app:iconSpaceReserved="false"
+            app:cpv_dialogType="custom"
+            app:title="Color"
+            android:icon="@drawable/rr_color_icon" />
+
+        <net.servokio.vanilla.preferences.CustomFontListPreference
+            android:key="qs_header_clock_font_style"
+            android:title="Font Style"
+            android:dependency="show_qs_clock"
+            android:icon="@drawable/rr_font_size_icon"
+            android:entries="@array/lock_clock_fonts_entries"
+            android:entryValues="@array/lock_clock_fonts_values"
+            android:summary="%s"
+            android:defaultValue="" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

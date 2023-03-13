@@ -25,6 +25,8 @@ import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
 import net.servokio.vanilla.modules.Static;
 
+import java.io.File;
+
 public class AAboutDevice extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class AAboutDevice extends AppCompatActivity {
 
             pref = findPreference("ctx_dir");
             if(pref != null) pref.setSummary(getContext().getFilesDir().getAbsolutePath());
+
+            pref = findPreference("files_dir");
+            if(pref != null) pref.setSummary(new File(Static.getPreferenceDir(getActivity())).getAbsolutePath());
 
             pref = findPreference("build_manufacturer");
             if(pref != null) pref.setSummary(Build.MANUFACTURER);

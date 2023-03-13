@@ -3,7 +3,14 @@ package net.servokio.vanilla.modules.mods;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 import android.content.res.XResources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -15,6 +22,7 @@ import com.bumptech.glide.Glide;
 import net.servokio.vanilla.modules.Static;
 
 import java.io.File;
+import java.io.IOException;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
@@ -22,9 +30,17 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 
-public class MHeaderImage {
+public class MHeaderImage implements MMain{
     private XSharedPreferences mPrefs;
     private XSharedPreferences mPrefs2;
+
+    protected int MAX_BITMAP_SIZE = 100 * 1024 * 1024; // 100 MB
+
+    private TextureView mTextureView;
+    private MediaPlayer mMediaPlayer;
+
+    private float mVideoWidth;
+    private float mVideoHeight;
 
     public void initLoad(final XSharedPreferences xSharedPreferences, final ClassLoader classLoader) {
         mPrefs = xSharedPreferences;
@@ -58,29 +74,192 @@ public class MHeaderImage {
                 int ma = Static.dpToPx(mQSContainerImpl.getContext(), 4);
                 ll.setPadding(ma, ma, ma, ma);
 
-                String headerFileType = mPrefs.getString("status_bar_custom_header_image_type", "unk");
+                String hfmine = mPrefs.getString("status_bar_custom_header_image_type", "unk");
 
-                if(headerFileType.equals("static") || headerFileType.equals("animated")){
-                    //image
-                    ImageView iv = new ImageView(ll.getContext());
-                    iv.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    ));
-                    iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                if(!hfmine.equals("unk")){
+
                     File file = new File(mPrefs.getFile().getParent() + "/custom_file_header_image");
-                    XposedBridge.log(file.getAbsolutePath());
                     if (file.exists()) {
-                        //Image types
-                        if(headerFileType.equals("animated")){
-                            Glide.with(ll.getContext()).load(file).into(iv);
-                        } else iv.setImageBitmap(BitmapFactory.decodeFile(mPrefs.getFile().getParent() + "/custom_file_header_image"));
+                        if(hfmine.equals("video/mp4")){
+                            mTextureView = new TextureView(ll.getContext());
+                            mTextureView.setLayoutParams(new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT
+                            ));
+                            ll.addView(mTextureView, 0);
+                            mQSContainerImpl.addView(ll, 1);
+                            mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+                                @Override
+                                public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
+                                    MHeaderImage.this.onSurfaceTextureAvailable(surfaceTexture, i, i1);
+                                }
+
+                                @Override
+                                public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
+
+                                }
+
+                                @Override
+                                public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+                                    return false;
+                                }
+
+                                @Override
+                                public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+
+                                }
+                            });
+                            if (mTextureView.isAvailable()) onSurfaceTextureAvailable(mTextureView.getSurfaceTexture(), mTextureView.getWidth(), mTextureView.getHeight());
+                            try {
+                                mMediaPlayer = new MediaPlayer();
+                                mMediaPlayer.setVolume(0,0);
+                                mMediaPlayer.setDataSource(file.getAbsolutePath());
+                                mMediaPlayer.setLooping(true);
+
+                                mMediaPlayer.prepare();
+
+                                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                    @Override
+                                    public void onPrepared(MediaPlayer mediaPlayer) {
+                                        mediaPlayer.start();
+                                    }
+                                });
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            mTextureView.post(()->{
+                                calculateVideoSize(file);
+                                updateTextureViewSize(ll.getWidth(), bh);
+                            });
+                        } else {
+                            //Image
+                            ImageView iv = new ImageView(ll.getContext());
+                            iv.setLayoutParams(new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT
+                            ));
+                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                            //Image types
+                            if(hfmine.equals("image/gif") || bitmap.getByteCount() > MAX_BITMAP_SIZE){
+                                Glide.with(ll.getContext()).load(file).into(iv);
+                            } else iv.setImageBitmap(bitmap);
+                            ll.addView(iv, 0);
+                            mQSContainerImpl.addView(ll, 1);
+                        }
                         XposedBridge.log("Okay image "+file.getAbsolutePath());
                     } else XposedBridge.log("not found");
-                    ll.addView(iv, 0);
                 }
+            }
+        });
 
-                mQSContainerImpl.addView(ll, 1);
+        findAndHookMethod("com.android.systemui.qs.QSContainerImpl", classLoader, "onFinishInflate", new XC_MethodHook() {
+            protected void afterHookedMethod(MethodHookParam methodHookParam) {
+                ViewGroup mQSContainerImpl = (ViewGroup) methodHookParam.thisObject;
+                View mStatusBarBackground = (View) XposedHelpers.getObjectField(mQSContainerImpl, "mStatusBarBackground");
+                int bh = Static.dpToPx(mStatusBarBackground.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
+                mStatusBarBackground.getLayoutParams().height = bh;
+
+                LinearLayout ll = new LinearLayout(mQSContainerImpl.getContext());
+                ll.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        bh
+                ));
+                ll.setOrientation(LinearLayout.HORIZONTAL);
+                int ma = Static.dpToPx(mQSContainerImpl.getContext(), 4);
+                ll.setPadding(ma, ma, ma, ma);
+
+                String hfmine = mPrefs.getString("status_bar_custom_header_image_type", "unk");
+
+                if(!hfmine.equals("unk")){
+
+                    File file = new File(mPrefs.getFile().getParent() + "/custom_file_header_image");
+                    if (file.exists()) {
+                        if(hfmine.equals("video/mp4")){
+                            mTextureView = new TextureView(ll.getContext());
+                            mTextureView.setLayoutParams(new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT
+                            ));
+                            ll.addView(mTextureView, 0);
+                            mQSContainerImpl.addView(ll, 1);
+                            mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+                                @Override
+                                public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
+                                    MHeaderImage.this.onSurfaceTextureAvailable(surfaceTexture, i, i1);
+                                }
+
+                                @Override
+                                public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
+
+                                }
+
+                                @Override
+                                public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+                                    return false;
+                                }
+
+                                @Override
+                                public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+
+                                }
+                            });
+                            if (mTextureView.isAvailable()) onSurfaceTextureAvailable(mTextureView.getSurfaceTexture(), mTextureView.getWidth(), mTextureView.getHeight());
+                            try {
+                                mMediaPlayer = new MediaPlayer();
+                                mMediaPlayer.setVolume(0,0);
+                                mMediaPlayer.setDataSource(file.getAbsolutePath());
+                                mMediaPlayer.setLooping(true);
+
+                                mMediaPlayer.prepare();
+
+                                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                    @Override
+                                    public void onPrepared(MediaPlayer mediaPlayer) {
+                                        mediaPlayer.start();
+                                    }
+                                });
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            mTextureView.post(()->{
+                                calculateVideoSize(file);
+                                updateTextureViewSize(ll.getWidth(), bh);
+                            });
+                        } else {
+                            //Image
+                            ImageView iv = new ImageView(ll.getContext());
+                            iv.setLayoutParams(new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT
+                            ));
+                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                            //Image types
+                            if(hfmine.equals("image/gif") || bitmap.getByteCount() > MAX_BITMAP_SIZE){
+                                Glide.with(ll.getContext()).load(file).into(iv);
+                            } else iv.setImageBitmap(bitmap);
+                            ll.addView(iv, 0);
+                            mQSContainerImpl.addView(ll, 1);
+                        }
+                        XposedBridge.log("Okay image "+file.getAbsolutePath());
+                    } else XposedBridge.log("not found");
+                }
+            }
+        });
+
+        findAndHookMethod("com.android.systemui.qs.QSFragment", classLoader, "onDestroy", new XC_MethodHook() {
+            protected void afterHookedMethod(MethodHookParam methodHookParam) {
+                if (mMediaPlayer != null) {
+                    XposedBridge.log("stop");
+                    mMediaPlayer.stop();
+                    mMediaPlayer.release();
+                    mMediaPlayer = null;
+                }
             }
         });
 
@@ -95,6 +274,11 @@ public class MHeaderImage {
                 p.setMargins(0, bh, 0,0);
             }
         });
+    }
+
+    private void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
+        Surface surface = new Surface(surfaceTexture);
+        mMediaPlayer.setSurface(surface);
     }
 
     public void initInit(final XSharedPreferences xSharedPreferences, XResources res){
@@ -131,5 +315,45 @@ public class MHeaderImage {
                 p.setMargins(0, bh, 0,0);
             }
         });
+    }
+
+    private void calculateVideoSize(File file) {
+        try {
+            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+            metaRetriever.setDataSource(file.getAbsolutePath());
+            String height = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+            String width = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+            mVideoHeight = Float.parseFloat(height);
+            mVideoWidth = Float.parseFloat(width);
+        } catch (NumberFormatException e) {
+            XposedBridge.log("Error MHeaderImage: "+e.getMessage());
+        }
+    }
+
+    private void updateTextureViewSize(int viewWidth, int viewHeight) {
+        float scaleX = 1.0f;
+        float scaleY = 1.0f;
+
+        if (mVideoWidth > viewWidth && mVideoHeight > viewHeight) {
+            scaleX = mVideoWidth / viewWidth;
+            scaleY = mVideoHeight / viewHeight;
+        } else if (mVideoWidth < viewWidth && mVideoHeight < viewHeight) {
+            scaleY = viewWidth / mVideoWidth;
+            scaleX = viewHeight / mVideoHeight;
+        } else if (viewWidth > mVideoWidth) {
+            scaleY = (viewWidth / mVideoWidth) / (viewHeight / mVideoHeight);
+        } else if (viewHeight > mVideoHeight) {
+            scaleX = (viewHeight / mVideoHeight) / (viewWidth / mVideoWidth);
+        }
+
+        // Calculate pivot points, in our case crop from center
+        int pivotPointX = viewWidth / 2;
+        int pivotPointY = viewHeight / 2;
+
+        Matrix matrix = new Matrix();
+        matrix.setScale(scaleX, scaleY, pivotPointX, pivotPointY);
+
+        mTextureView.setTransform(matrix);
+        mTextureView.setLayoutParams(new LinearLayout.LayoutParams(viewWidth, viewHeight));
     }
 }

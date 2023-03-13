@@ -16,6 +16,12 @@
         android:summary="dir"
         android:title="Context dir" />
     <Preference
+        android:key="files_dir"
+        android:selectable="true"
+        android:icon="@drawable/ic_find_in_page_24px"
+        android:summary="-"
+        android:title="Files dir" />
+    <Preference
         android:key="build_manufacturer"
         android:selectable="true"
         android:icon="@drawable/rr_ls_ui_icon"

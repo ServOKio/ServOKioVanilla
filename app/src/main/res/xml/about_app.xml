@@ -16,4 +16,12 @@
             android:title="Ven#8485"
             app:summary="Discord 343383572805058560"/>
     </PreferenceCategory>
+    <PreferenceCategory
+        app:title="About app">
+        <Preference
+            app:key="app_version"
+            android:title="App version"
+            app:icon="@drawable/rr_up_icon"
+            app:summary="-"/>
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:settings="http://schemas.android.com/tools">
+    <Preference
+        android:enabled="false"
+        android:layout="@layout/header_sub_lockscreen_colors" />
+    <SwitchPreferenceCompat
+        app:key="lockscreen_clock_color_enable"
+        app:icon="@drawable/rr_clock_icon"
+        app:defaultValue="false"
+        app:title="Change Lockscreen Clock Color"
+        />
+    <net.servokio.vanilla.preferences.SystemSettingColorPickerPreference
+        android:key="lockscreen_clock_color"
+        android:defaultValue="0xffffffff"
+        app:cpv_showAlphaSlider="false"
+        app:iconSpaceReserved="false"
+        app:cpv_dialogType="custom"
+        app:title="Lockscreen Clock"
+        android:icon="@drawable/rr_clock_icon" />
+</PreferenceScreen>

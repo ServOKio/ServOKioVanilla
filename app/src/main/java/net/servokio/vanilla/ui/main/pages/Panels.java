@@ -26,6 +26,7 @@ import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
 import net.servokio.vanilla.ui.main.sub.ACarrierLabel;
 import net.servokio.vanilla.ui.main.sub.AHeader;
+import net.servokio.vanilla.ui.main.sub.AQuickSettings;
 
 public class Panels extends Fragment {
     private FragmentManager fm;
@@ -66,6 +67,11 @@ public class Panels extends Fragment {
             Preference pref = findPreference("header");
             if (pref != null) pref.setOnPreferenceClickListener(e -> {
                 startActivity(new Intent(getContext(), AHeader.class));
+                return true;
+            });
+            pref = findPreference("qs_customizations");
+            if (pref != null) pref.setOnPreferenceClickListener(e -> {
+                startActivity(new Intent(getContext(), AQuickSettings.class));
                 return true;
             });
         }

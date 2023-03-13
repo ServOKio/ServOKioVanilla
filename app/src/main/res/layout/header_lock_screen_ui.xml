@@ -43,10 +43,18 @@
             android:maxHeight="100dp"
             android:src="@drawable/test" />
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+        <TextClock
+            android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal|center_vertical"
-            app:srcCompat="@drawable/rr_clock_icon" />
+            android:id="@+id/clock_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:format12Hour="h:mm"
+            android:format24Hour="kk:mm"
+            android:elegantTextHeight="false"
+            android:letterSpacing="0.02"
+            android:textSize="36sp"
+            />
     </FrameLayout>
 </LinearLayout>

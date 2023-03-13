@@ -6,7 +6,17 @@
         android:layout="@layout/header_lock_screen" />
     <Preference
         android:key="lock_screen_ui"
-        android:icon="@drawable/rr_text_icon"
+        android:icon="@drawable/rr_styles_icon"
         android:summary="Настроить различные шрифты и цвета часов экрана блокировки"
         android:title="Стиль экрана блокировки" />
+    <Preference
+        android:key="lock_items"
+        android:icon="@drawable/rr_text_icon"
+        android:title="Lockscreen items"
+        android:summary="Customise various lockscreen items" />
+    <Preference
+        android:key="lockscreen_preview"
+        android:icon="@drawable/ic_settings_gestures"
+        android:title="Lockscreen customization"
+        android:summary="Just a test" />
 </PreferenceScreen>

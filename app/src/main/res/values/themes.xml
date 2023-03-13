@@ -56,4 +56,22 @@
     <style name="Theme.Vanilla.ViewPager">
         <item name="background">@color/white</item>
     </style>
+
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.Vanilla">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.Button.TextButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textColor">@color/main_theme</item>
+        <item name="android:paddingLeft">@dimen/mtrl_btn_text_btn_padding_left</item>
+        <item name="android:paddingRight">@dimen/mtrl_btn_text_btn_padding_right</item>
+        <item name="iconTint">@color/mtrl_text_btn_text_color_selector</item>
+        <item name="iconPadding">@dimen/mtrl_btn_text_btn_icon_padding</item>
+        <item name="backgroundTint">@color/mtrl_btn_text_btn_bg_color_selector</item>
+        <item name="rippleColor">@color/mtrl_btn_text_btn_ripple_color</item>
+    </style>
+
 </resources>

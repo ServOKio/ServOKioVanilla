@@ -5,13 +5,10 @@ import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,14 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
 import net.servokio.vanilla.modules.FontListParser;
-import net.servokio.vanilla.modules.Static;
 
 import java.util.List;
 
@@ -80,8 +75,8 @@ public class ACarrierLabel extends AppCompatActivity {
                     if (pfd == null) pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM);
                     if (pfd != null) {
                         ImageView imageView = getListView().findViewById(R.id.imageView4);
-                        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-                        imageView.setImageDrawable(wallpaperDrawable);
+                        final Bitmap result = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
+                        imageView.setImageBitmap(result);
                         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.test);
                         imageView.startAnimation(animation);
                         LinearLayout l = getListView().findViewById(R.id.black);

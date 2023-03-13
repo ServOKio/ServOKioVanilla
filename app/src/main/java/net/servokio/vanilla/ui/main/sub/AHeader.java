@@ -9,22 +9,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +56,7 @@ import java.lang.reflect.Field;
 import java.net.URLConnection;
 import java.nio.file.Files;
 
-public class AHeader extends AppCompatActivity {
+public class AHeader extends AppCompatActivity{
     private static final int REQUEST_PICK_IMAGE = 0;
 
     @Override
@@ -58,18 +68,18 @@ public class AHeader extends AppCompatActivity {
         }
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
-        private String mPreferenceDir;
+    public static class SettingsFragment extends PreferenceFragmentCompat{
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.settings_sub_header, rootKey);
 
             CustomPreviewImagePreference pref = findPreference("file_header_select");
             if (pref != null) {
-                pref.setFilePath(getPreferenceDir(getActivity()) + "/custom_file_header_image");
+                System.out.println("PD: "+Static.getPreferenceDir(getActivity()) + "/custom_file_header_image");
+                pref.setFilePath(Static.getPreferenceDir(getActivity()) + "/custom_file_header_image");
                 pref.setOnPreferenceClickListener(e -> {
                     Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
+                    intent.setType("image/* video/mp4");
                     startActivityForResult(intent, REQUEST_PICK_IMAGE);
                     return true;
                 });
@@ -78,32 +88,32 @@ public class AHeader extends AppCompatActivity {
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent result) {
+            if (resultCode != Activity.RESULT_OK) return;
             if (requestCode == REQUEST_PICK_IMAGE) {
-                if (resultCode != Activity.RESULT_OK) return;
                 final Uri imageUri = result.getData();
 
                 SharedPreferences.Editor editor = prefs.edit();
-
                 File file = saveHeaderImage(imageUri);
                 if(file != null){
-                    String mine = Static.getFileMine(file);
-                    if(mine != null){
-                        mine = mine.equals("image/gif") ? "animated" : "static";
-                    } else mine = "static";
-                    editor.putString("status_bar_custom_header_image_type", mine);
-                } else editor.putString("status_bar_custom_header_image_type", "unk");
+                    String mine = Static.getFileMine(getContext().getContentResolver(), imageUri);
+                    editor.putString("status_bar_custom_header_image_type", mine == null ? "unk" : mine);
+                } else {
+                    System.out.println("fail");
+                    editor.putString("status_bar_custom_header_image_type", "unk");
+                }
 
                 editor.putString("status_bar_custom_header_provider", "file");
-                editor.putString("ctx_files_dir", getPreferenceDir(getActivity()) + "/custom_file_header_image");
+                editor.putString("ctx_files_dir", Static.getPreferenceDir(getActivity()) + "/custom_file_header_image");
                 editor.putString("status_bar_custom_header_image", imageUri.toString());
                 editor.apply();
-            }
+                System.out.println("New banner image");
+            } else System.out.println(requestCode);
         }
 
         private File saveHeaderImage(Uri uri) {
             try {
                 InputStream openInputStream = getContext().getContentResolver().openInputStream(uri);
-                File file = new File(getPreferenceDir(getActivity()) + "/custom_file_header_image");
+                File file = new File(Static.getPreferenceDir(getActivity()) + "/custom_file_header_image");
                 if (file.exists()) file.delete();
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 byte[] bArr = new byte[8192];
@@ -121,26 +131,6 @@ public class AHeader extends AppCompatActivity {
                 Log.e("FileHeaderProvider", "Save header image failed  " + uri);
             }
             return null;
-        }
-
-        public String getPreferenceDir(Context context) {
-            if (mPreferenceDir == null) {
-                try {
-                    SharedPreferences sharedPreferences = context.getSharedPreferences("dummy", 0);
-                    sharedPreferences.edit().putBoolean("dummy", false).commit();
-                    Field declaredField = sharedPreferences.getClass().getDeclaredField("mFile");
-                    declaredField.setAccessible(true);
-                    this.mPreferenceDir = new File(((File) declaredField.get(sharedPreferences)).getParent()).getAbsolutePath();
-                    Log.d("GravityBox", "Preference folder: " + this.mPreferenceDir);
-                } catch (IllegalAccessException | NoSuchFieldException e) {
-                    Log.e("GravityBox", "Could not determine preference folder path. Returning default.");
-                    e.printStackTrace();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        this.mPreferenceDir = context.getDataDir() + "/shared_prefs";
-                    }
-                }
-            }
-            return this.mPreferenceDir;
         }
 
         @Override
@@ -170,8 +160,10 @@ public class AHeader extends AppCompatActivity {
                         l.startAnimation(opa);
                     }
                 }
+
             });
             return recyclerView;
         }
+
     }
 }

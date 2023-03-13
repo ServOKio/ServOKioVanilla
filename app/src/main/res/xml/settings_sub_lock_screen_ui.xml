@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:settings="http://schemas.android.com/tools">
     <Preference
-        android:enabled="false"
+        android:enabled="true"
+        app:key="lockscreen_click"
         android:layout="@layout/header_lock_screen_ui" />
     <SwitchPreferenceCompat
         app:key="lockscreen_wallpaper_zoom"
@@ -26,6 +27,56 @@
             app:defaultValue="true"
             app:title="Show lockscreen clock &amp; date"
             app:summary="Show/hide entire clock &amp; date view on lockscreen"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="Lockscreen elements">
+        <net.servokio.vanilla.preferences.CustomSeekBarPreference
+            android:key="lockscreen_clock_rotation"
+            android:title="Clock rotation"
+            android:max="360"
+            settings:min="0"
+            android:defaultValue="0"
+            android:icon="@drawable/rr_rotate_icon"
+            settings:units="px" />
+        <SwitchPreferenceCompat
+            app:key="lockscreen_clock_and_notifications_position"
+            app:icon="@drawable/ic_expand"
+            app:defaultValue="false"
+            app:title="Change positions"
+            app:summary="Change positions for clock and notifications"
+            />
+        <net.servokio.vanilla.preferences.CustomSeekBarPreference
+            android:key="lockscreen_clock_position"
+            android:title="Clock Y position"
+            android:max="512"
+            settings:min="0"
+            android:defaultValue="25"
+            android:icon="@drawable/rr_position_icon"
+            settings:units="px"
+            android:dependency="lockscreen_clock_and_notifications_position" />
+        <SwitchPreferenceCompat
+            app:enabled="false"
+            app:key="lockscreen_widgets_enable"
+            app:icon="@drawable/rr_visib_icon"
+            app:defaultValue="false"
+            app:title="Enable lockscreen widgets"
+            app:summary="Show/hide lockscreen widgets"
+            />
+        <Preference
+            app:enabled="false"
+            app:dependency="lockscreen_widgets_list"
+            app:key="lockscreen_widgets_list"
+            app:icon="@drawable/rr_list_animation"
+            app:title="List of all widgets"
+            app:summary="Show/hide entire clock &amp; date view on lockscreen"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="Lockscreen Extra">
+        <Preference
+            app:key="lockscreen_colors"
+            app:icon="@drawable/rr_color_icon"
+            app:title="Lockscreen Colors"
+            app:summary="Change color of lockscreen widgets"
             />
     </PreferenceCategory>
 </PreferenceScreen>

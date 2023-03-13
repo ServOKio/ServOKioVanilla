@@ -29,7 +29,9 @@ import android.widget.LinearLayout;
 
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
+import net.servokio.vanilla.ui.main.sub.ALockItems;
 import net.servokio.vanilla.ui.main.sub.ALockScreenUI;
+import net.servokio.vanilla.ui.main.sub.BLockscreenPreview;
 
 public class LockScreen extends Fragment {
     private FragmentManager fm;
@@ -73,32 +75,19 @@ public class LockScreen extends Fragment {
                 startActivity(new Intent(getContext(), ALockScreenUI.class));
                 return true;
             });
-        }
 
-//        @MainThread
-//        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-//            super.onViewCreated(view, savedInstanceState);
-//            System.out.println("2");
-//        }
-//
-//        @Override
-//        public void onCreate(Bundle savedInstanceState) {
-//            super.onCreate(savedInstanceState);
-//            System.out.println("7");
-//        }
-//
-//        @Override
-//        public void onStart() {
-//            super.onStart();
-//            System.out.println("6");
-//        }
-//
-//        @Override
-//        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//            View v = super.onCreateView(inflater, container, savedInstanceState);
-//            System.out.println("9");
-//            return v;
-//        }
+            pref = findPreference("lock_items");
+            if (pref != null) pref.setOnPreferenceClickListener(e -> {
+                startActivity(new Intent(getContext(), ALockItems.class));
+                return true;
+            });
+
+            pref = findPreference("lockscreen_preview");
+            if (pref != null) pref.setOnPreferenceClickListener(e -> {
+                startActivity(new Intent(getContext(), BLockscreenPreview.class));
+                return true;
+            });
+        }
 
         @Override
         public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -110,8 +99,8 @@ public class LockScreen extends Fragment {
                     if (pfd == null) pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM);
                     if (pfd != null) {
                         ImageView imageView = getListView().findViewById(R.id.imageView4);
-                        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-                        imageView.setImageDrawable(wallpaperDrawable);
+                        final Bitmap result = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
+                        imageView.setImageBitmap(result);
                         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.test);
                         imageView.startAnimation(animation);
                         LinearLayout l = getListView().findViewById(R.id.black);

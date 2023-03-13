@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:settings="http://schemas.android.com/tools">
     <Preference
@@ -22,7 +23,7 @@
             app:icon="@drawable/rr_custom_carrier_label_icon"
             app:dialogMessage="Please enter a new label. Leave black to revert to stock label."
             app:useSimpleSummaryProvider="true" />
-        <ListPreference
+        <net.servokio.vanilla.preferences.CustomFontListPreference
             android:key="carrier_label_font_style"
             android:title="Font style"
             android:icon="@drawable/rr_font_size_icon"

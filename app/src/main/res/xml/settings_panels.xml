@@ -6,6 +6,12 @@
         android:enabled="false"
         android:layout="@layout/header_panels" />
     <Preference
+        android:key="qs_customizations"
+        android:title="Quick Settings"
+        android:summary="Miscellaneous quick settings customisation"
+        android:icon="@drawable/rr_quick_settings_icon"
+        />
+    <Preference
         android:key="header"
         android:title="Header"
         android:summary="Customise the header"

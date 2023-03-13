@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:settings="http://schemas.android.com/tools">
+    <Preference
+        android:enabled="false"
+        android:layout="@layout/header_sub_lock_items" />
+    <PreferenceCategory app:title="Interface">
+        <SwitchPreferenceCompat
+            app:key="lockscreen_lock_icon"
+            app:icon="@drawable/rr_lock_icon"
+            app:defaultValue="true"
+            app:title="Lock icon"
+            app:summary="Display lock icon on the lockscreen"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

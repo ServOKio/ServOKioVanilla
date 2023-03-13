@@ -50,7 +50,6 @@
             android:icon="@drawable/rr_color_icon"
             android:summary="Select image from storage"
             android:persistent="false"
-            settings:path="-"
             android:dependency="status_bar_custom_header" >
         </net.servokio.vanilla.preferences.CustomPreviewImagePreference>
 
@@ -64,15 +63,7 @@
 <!--                android:targetPackage="org.omnirom.omnistyle"-->
 <!--                android:targetClass="org.omnirom.omnistyle.PickHeaderActivity" />-->
 <!--        </Preference>-->
-<!--        <SeekBarPreference-->
-<!--            android:key="status_bar_custom_header_shadow"-->
-<!--            android:title="@string/status_bar_custom_header_shadow_title"-->
-<!--            android:icon="@drawable/rr_bb_dark_icon"-->
-<!--            android:max="100"-->
-<!--            android:min="0"-->
-<!--            settings:units="@string/unit_percent"-->
-<!--            android:defaultValue="0"-->
-<!--            android:dependency="status_bar_custom_header" />-->
+
 
         <net.servokio.vanilla.preferences.CustomSeekBarPreference
             android:key="status_bar_custom_header_height"
