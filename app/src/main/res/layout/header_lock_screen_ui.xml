@@ -32,7 +32,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#000000"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal">
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/lock_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="clip_horizontal|center_horizontal"
+                android:layout_weight="1"
+                android:translationY="20dp"
+                card_view:srcCompat="@drawable/ic_security_lock_white" />
 
         </androidx.cardview.widget.CardView>
 
@@ -43,18 +53,35 @@
             android:maxHeight="100dp"
             android:src="@drawable/test" />
 
-        <TextClock
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:id="@+id/clock_view"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:format12Hour="h:mm"
-            android:format24Hour="kk:mm"
-            android:elegantTextHeight="false"
-            android:letterSpacing="0.02"
-            android:textSize="36sp"
-            />
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextClock
+                android:id="@+id/clock_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elegantTextHeight="false"
+                android:format12Hour="h:mm"
+                android:format24Hour="kk:mm"
+                android:gravity="center_horizontal"
+                android:letterSpacing="0.02"
+                android:singleLine="true"
+                android:text="22:00"
+                android:textColor="#ffffff"
+                android:textSize="36sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello world"
+                android:id="@+id/owner_info"
+                android:textColor="#aaffffff"/>
+        </LinearLayout>
+
+
     </FrameLayout>
 </LinearLayout>

@@ -2,12 +2,14 @@ package net.servokio.vanilla;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
@@ -29,12 +31,9 @@ import net.servokio.vanilla.databinding.ActivityMainBinding;
 import net.servokio.vanilla.modules.Tools;
 import net.servokio.vanilla.ui.main.SectionsPagerAdapter;
 import net.servokio.vanilla.ui.main.pages.AboutApp;
-import net.servokio.vanilla.ui.main.sub.ALockScreenUI;
-import net.servokio.vanilla.ui.main.utils.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -142,7 +141,58 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             } else {
-                new MaterialAlertDialogBuilder(this).setTitle("Storage permissions").setMessage("For:\n● Wallpaper preview").setIcon(R.drawable.ic_sd_card).setPositiveButton("Let's enable", (dialogInterface, i) -> {
+                new MaterialAlertDialogBuilder(this).setTitle("Storage permissions").setMessage("For:\n● Wallpaper preview\n● Backup settings").setIcon(R.drawable.ic_sd_card).setPositiveButton("Let's enable", (dialogInterface, i) -> {
+                    ActivityCompat.requestPermissions(MainActivity.getInstance(), new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                    }, 1);
+                }).setNeutralButton("Report bug", (dialogInterface, i) -> {
+                    startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://github.com/ServOKio/vanilla")));
+                }).setNegativeButton("Ignore", null).show();
+            }
+        });
+
+        fab = binding.restoreSettings;
+        fab.setOnClickListener(view -> {
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                File f = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS+"/Vanilla_backup");
+                ObjectInputStream input = null;
+                try {
+                    input = new ObjectInputStream(new FileInputStream(f));
+                    SharedPreferences.Editor prefEdit = prefs.edit();
+                    prefEdit.clear();
+                    Map<String, ?> entries = (Map<String, ?>) input.readObject();
+                    for (Map.Entry<String, ?> entry : entries.entrySet()) {
+                        Object v = entry.getValue();
+                        String key = entry.getKey();
+
+                        if (v instanceof Boolean)
+                            prefEdit.putBoolean(key, ((Boolean) v).booleanValue());
+                        else if (v instanceof Float)
+                            prefEdit.putFloat(key, ((Float) v).floatValue());
+                        else if (v instanceof Integer)
+                            prefEdit.putInt(key, ((Integer) v).intValue());
+                        else if (v instanceof Long)
+                            prefEdit.putLong(key, ((Long) v).longValue());
+                        else if (v instanceof String)
+                            prefEdit.putString(key, ((String) v));
+                    }
+                    prefEdit.commit();
+                    Toast.makeText(this, "Okay", Toast.LENGTH_SHORT).show();
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                } finally {
+                    try {
+                        if (input != null) {
+                            input.close();
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        Toast.makeText(this, "Error №2: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else {
+                new MaterialAlertDialogBuilder(this).setTitle("Storage permissions").setMessage("For:\n● Wallpaper preview\n● Backup settings").setIcon(R.drawable.ic_sd_card).setPositiveButton("Let's enable", (dialogInterface, i) -> {
                     ActivityCompat.requestPermissions(MainActivity.getInstance(), new String[]{
                             Manifest.permission.READ_EXTERNAL_STORAGE
                     }, 1);
@@ -208,6 +258,20 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity getInstance() {
         return MainActivity.sInstance;
+    }
+
+    protected boolean shouldAskPermissions() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    @TargetApi(23)
+    protected void askPermissions() {
+        String[] permissions = {
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE"
+        };
+        int requestCode = 200;
+        requestPermissions(permissions, requestCode);
     }
 
 }

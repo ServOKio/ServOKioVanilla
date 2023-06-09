@@ -2,19 +2,30 @@ package net.servokio.vanilla.modules.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.res.XResources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.os.Build;
+import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
+import android.widget.TextView;
+
+import net.servokio.vanilla.modules.mods.lockScreenWidget.WidgetHost;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +39,13 @@ import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 public class MLockscreen implements MMain{
     private XSharedPreferences mPrefs;
     private XSharedPreferences mPrefs2;
+
+    private static Context contextSsr = null;
+    private static ViewGroup keyguardStatusView = null;
+
+    //Owner info
+    private TextView mOwnerInfo = null;
+
 
     private ImageView lockscreenWallpaper;
     private ImageView lockscreenWallpaperFront;
@@ -52,6 +70,37 @@ public class MLockscreen implements MMain{
     @Override
     public void initLoad(XSharedPreferences xSharedPreferences, ClassLoader classLoader) {
         mPrefs = xSharedPreferences;
+
+        //gg
+        try {
+            XposedHelpers.findAndHookConstructor("com.android.keyguard.KeyguardStatusView", classLoader, Context.class, AttributeSet.class, Integer.TYPE, new XC_MethodHook() {
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    try {
+                        Context unused = contextSsr = (Context) param.args[0];
+                        ViewGroup unused2 = keyguardStatusView = (ViewGroup) param.thisObject;
+                    } catch (ClassCastException e) {
+                    }
+                    if (contextSsr == null) {
+                        XposedBridge.log("<<<========== LockScreenWidgets KeyguardStatusView Constructor contextSsr == null");
+                        return;
+                    }
+                }
+            });
+        } catch (Throwable th) {
+            XposedBridge.log("Error hooking onFinishInflate: "+th.getMessage());
+        }
+
+        try{
+            XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardStatusView", classLoader, "onFinishInflate", new XC_MethodHook() {
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    mOwnerInfo = (TextView) XposedHelpers.getObjectField(param.thisObject, "mOwnerInfo");
+                    if(mPrefs.contains("lockowner_text_color")) mOwnerInfo.setTextColor(mPrefs.getInt("lockowner_text_color", 0xffffffff));
+                    mOwnerInfo.setShadowLayer(14, 0,0, Color.parseColor("#0000005d"));
+                }
+            });
+        } catch (Throwable th) {
+            XposedBridge.log("Error hooking onFinishInflate: "+th.getMessage());
+        }
 
         //хакаем лоскрин
         try {

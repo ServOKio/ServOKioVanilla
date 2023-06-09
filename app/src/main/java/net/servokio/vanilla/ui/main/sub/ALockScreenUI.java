@@ -21,12 +21,14 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -34,8 +36,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
+import net.servokio.vanilla.modules.FontListParser;
 import net.servokio.vanilla.modules.Tools;
 import net.servokio.vanilla.preferences.CustomSeekBarPreference;
+
+import java.util.List;
 
 public class ALockScreenUI extends AppCompatActivity {
 
@@ -52,7 +57,10 @@ public class ALockScreenUI extends AppCompatActivity {
         private LinearLayout l = null;
         private boolean v = true;
         private ImageView imageView = null;
+        //Some shit
+        private ImageView mLockIcon = null;
         private TextClock clockView = null;
+        private TextView mOwnerInfo = null;
         private float alpha = 0;
 
         @Override
@@ -94,6 +102,27 @@ public class ALockScreenUI extends AppCompatActivity {
                 play();
                 return true;
             });
+
+            ListPreference pref1 = findPreference("lock_ownerinfo_fonts");
+            if(pref != null){
+                List<FontListParser.SystemFont> fonts;
+                try {
+                    fonts = FontListParser.getSystemFonts();
+                } catch (Exception e) {
+                    pref1.setDialogMessage("Sys error: "+e.getMessage());
+                    fonts = FontListParser.safelyGetSystemFonts();
+                }
+                CharSequence[] entries = new String[fonts.size() + 1];
+                entries[0] = "Normal (default)";
+                CharSequence[] entryValues = new String[fonts.size() + 1];
+                entryValues[0] = "";
+                for (int i = 0; i < fonts.size(); i++) {
+                    entries[i+1] = fonts.get(i).formated;
+                    entryValues[i+1] = fonts.get(i).path;
+                }
+                pref1.setEntries(entries);
+                pref1.setEntryValues(entryValues);
+            }
         }
 
         void play(){
@@ -109,7 +138,7 @@ public class ALockScreenUI extends AppCompatActivity {
                     @Override
                     public void onAnimationRepeat(Animation animation) {}
                 });
-                zoomNorm();
+                if(MainActivity.prefs.getBoolean("lockscreen_wallpaper_zoom", true)) zoomNorm();
                 l.startAnimation(anim);
             } else {
                 screenON();
@@ -118,18 +147,9 @@ public class ALockScreenUI extends AppCompatActivity {
         }
 
         void screenON(){
-            AlphaAnimation anim = new AlphaAnimation(1,alpha);
-            anim.setDuration(350);
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {}
-                @Override
-                public void onAnimationEnd(Animation animation) {l.setAlpha(alpha);}
-                @Override
-                public void onAnimationRepeat(Animation animation) {}
-            });
-            zoomBig();
-            l.startAnimation(anim);
+            l.animate().alpha(alpha).setDuration(350);
+
+            if(MainActivity.prefs.getBoolean("lockscreen_wallpaper_zoom", true)) zoomBig();
         }
 
         void zoomNorm(){
@@ -176,14 +196,23 @@ public class ALockScreenUI extends AppCompatActivity {
                     if (pfd == null) pfd = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM);
                     if (pfd != null) {
                         imageView = getListView().findViewById(R.id.imageView4);
+                        mLockIcon = getListView().findViewById(R.id.lock_icon);
                         clockView = getListView().findViewById(R.id.clock_view);
+                        mOwnerInfo = getListView().findViewById(R.id.owner_info);
+                        if(!MainActivity.prefs.getString("owner_info_settings", "").equals("")){
+                            mOwnerInfo.setText(MainActivity.prefs.getString("owner_info_settings", ""));
+                        }
+                        mLockIcon.setVisibility(MainActivity.prefs.getBoolean("lockscreen_lock_icon", true) ? View.VISIBLE : View.GONE);
+                        if(!MainActivity.prefs.getBoolean("lockscreen_clock", true)) clockView.setAlpha(0);
                         updateClock();
                         final Bitmap result = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
                         imageView.setImageBitmap(result);
-                        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.test);
-                        imageView.startAnimation(animation);
+                        if(MainActivity.prefs.getBoolean("lockscreen_wallpaper_zoom", true)){
+                            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.test);
+                            imageView.startAnimation(animation);
+                        }
                         l = getListView().findViewById(R.id.black);
-                        alpha = (100 - MainActivity.getInstance().prefs.getInt("lockscreen_bg_opacity", 55)) / 100.0f;
+                        alpha = (100 - MainActivity.prefs.getInt("lockscreen_bg_opacity", 55)) / 100.0f;
                         screenON();
                     }
                 }
@@ -203,6 +232,11 @@ public class ALockScreenUI extends AppCompatActivity {
                 } else zoomNorm();
             } else if (key.equals("lockscreen_clock_rotation") && clockView != null) {
                 updateClock();
+            } else if (key.equals("lockscreen_clock") && clockView != null) {
+                boolean yes = sharedPreferences.getBoolean("lockscreen_clock", true);
+                clockView.animate().alpha(yes ? 1 : 0).setDuration(250);
+            } else if (key.equals("owner_info_settings") && mOwnerInfo != null) {
+                mOwnerInfo.setText(sharedPreferences.getString("owner_info_settings", ""));
             }
         }
     }

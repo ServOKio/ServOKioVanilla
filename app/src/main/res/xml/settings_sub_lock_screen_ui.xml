@@ -29,6 +29,38 @@
             app:summary="Show/hide entire clock &amp; date view on lockscreen"
             />
     </PreferenceCategory>
+    <PreferenceCategory app:title="Информация о владельце на экране блокировки">
+        <EditTextPreference
+            android:icon="@drawable/rr_ls_info_icon"
+            android:title="Owner info text"
+            android:key="owner_info_settings"
+            android:summary="None"
+            app:useSimpleSummaryProvider="true"
+            />
+        <net.servokio.vanilla.preferences.CustomFontListPreference
+            android:key="lock_ownerinfo_fonts"
+            android:title="OwnerInfo font options"
+            android:icon="@drawable/rr_text_icon"
+            android:summary="%s"
+            android:defaultValue="" />
+        <net.servokio.vanilla.preferences.CustomSeekBarPreference
+            android:icon="@drawable/rr_bass_icon"
+            android:max="25"
+            android:title="Owner info font size"
+            android:key="lockowner_font_size"
+            android:defaultValue="21"
+            settings:min="10" settings:units="dp"
+            />
+        <net.servokio.vanilla.preferences.SystemSettingColorPickerPreference
+            android:key="lockowner_text_color"
+            android:defaultValue="0xffffffff"
+            app:cpv_showAlphaSlider="false"
+            app:iconSpaceReserved="false"
+            app:cpv_dialogType="custom"
+            app:title="Color"
+            app:icon="@drawable/rr_color_icon"
+            />
+    </PreferenceCategory>
     <PreferenceCategory app:title="Lockscreen elements">
         <net.servokio.vanilla.preferences.CustomSeekBarPreference
             android:key="lockscreen_clock_rotation"
