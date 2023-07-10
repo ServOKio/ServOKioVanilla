@@ -20,7 +20,6 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class MLockScreenWidgets {
     private static XSharedPreferences mPrefs;
-    private XSharedPreferences mPrefs2;
 
     private static ViewGroup keyguardStatusView = null;
     private static ViewGroup keyguardContainer = null;
@@ -131,10 +130,5 @@ public class MLockScreenWidgets {
         LSWidgetHostView appWidgetHostView = (LSWidgetHostView) mAppWidgetHost.createView(contextSsr, appWidgetConf.getXposedId(), appWidgetInfo);
         appWidgetHostView.updateHostViewWithConfiguration(appWidgetConf, appWidgetInfo, contextSsr);
         keyguardContainer.addView(appWidgetHostView);
-    }
-
-
-    public void initInit(final XSharedPreferences xSharedPreferences, XResources res) {
-        mPrefs2 = xSharedPreferences;
     }
 }

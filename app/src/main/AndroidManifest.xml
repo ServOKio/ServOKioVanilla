@@ -6,8 +6,14 @@
     <queries>
         <package android:name="com.android.systemui" />
     </queries>
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
 
     <application
         android:requestLegacyExternalStorage="true"
@@ -164,14 +170,12 @@
             android:launchMode="singleTop"
             android:parentActivityName=".MainActivity"
             android:exported="false">
-            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.main.sub.ASystemIcons"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
         </activity>
         <activity
             android:name=".ui.main.sub.BLockscreenPreview"
@@ -194,14 +198,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:exported="false">
-            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
         </activity>
 
         <meta-data

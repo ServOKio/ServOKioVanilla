@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
 import net.servokio.vanilla.ui.main.sub.ACarrierLabel;
+import net.servokio.vanilla.ui.main.sub.ASystemIcons;
 
 import java.io.File;
 
@@ -70,6 +71,11 @@ public class StatusBar extends Fragment {
             Preference pref = findPreference("carrier_label");
             if (pref != null) pref.setOnPreferenceClickListener(e -> {
                 startActivity(new Intent(getContext(), ACarrierLabel.class));
+                return true;
+            });
+            pref = findPreference("statusbar_icons");
+            if (pref != null) pref.setOnPreferenceClickListener(e -> {
+                startActivity(new Intent(getContext(), ASystemIcons.class));
                 return true;
             });
         }

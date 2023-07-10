@@ -10,4 +10,12 @@
         android:summary="@string/settings_status_bar_carrier_desk"
         android:icon="@drawable/rr_carrier_label_icon"
         />
+    <Preference
+        android:icon="@drawable/rr_statusbar_icons_icon"
+        android:title="@string/settings_status_bar_icons_title"
+        android:key="statusbar_icons"
+        android:summary="@string/settings_status_bar_icons_desc"
+        android:fragment="net.servokio.vanilla.ui.main.pages.LockScreen"
+        />
+
 </PreferenceScreen>

@@ -39,6 +39,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +48,8 @@ import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
 import net.servokio.vanilla.modules.Static;
 import net.servokio.vanilla.preferences.CustomPreviewImagePreference;
+import net.servokio.vanilla.ui.main.Intents;
+import net.servokio.vanilla.ui.main.utils.FU;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,17 +58,48 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URLConnection;
 import java.nio.file.Files;
+import java.util.Arrays;
 
-public class AHeader extends AppCompatActivity{
+public class AHeader extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
     private static final int REQUEST_PICK_IMAGE = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sub_header);
+        setContentView(R.layout.holder_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.header, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.holder_main, new SettingsFragment()).commit();
         }
+        prefs.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.d("Vanilla", "key "+key);
+        if(key.equals("status_bar_custom_header_height")){
+            sendIntent(Intents.ACTION_UPDATE_HEADER_IMAGE_PREFS);
+            sendIntent(Intents.ACTION_UPDATE_HEADER_IMAGE_HEIGHT);
+        } else if (key.equals("file_header_select")) {
+            sendIntent(Intents.ACTION_UPDATE_HEADER_IMAGE_PREFS);
+            sendIntent(Intents.ACTION_UPDATE_HEADER_IMAGE);
+        } else if (Arrays.asList("status_bar_custom_header").contains(key)) {
+            sendIntent(Intents.ACTION_UPDATE_HEADER_IMAGE_PREFS);
+            sendIntent(Intents.ACTION_UPDATE_HEADER_IMAGE_HEIGHT);
+            sendIntent(Intents.ACTION_UPDATE_HEADER_IMAGE);
+        }
+    }
+
+    private void sendIntent(String aga){
+        Log.d("Vanilla", "send intent "+aga);
+        final Intent intent = new Intent();
+        intent.setAction(aga);
+        sendBroadcast(intent);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat{
@@ -93,7 +127,7 @@ public class AHeader extends AppCompatActivity{
                 final Uri imageUri = result.getData();
 
                 SharedPreferences.Editor editor = prefs.edit();
-                File file = saveHeaderImage(imageUri);
+                File file = FU.saveImage(getContext(), Static.getPreferenceDir(getActivity()) + "/custom_file_header_image", imageUri);
                 if(file != null){
                     String mine = Static.getFileMine(getContext().getContentResolver(), imageUri);
                     editor.putString("status_bar_custom_header_image_type", mine == null ? "unk" : mine);
@@ -108,29 +142,6 @@ public class AHeader extends AppCompatActivity{
                 editor.apply();
                 System.out.println("New banner image");
             } else System.out.println(requestCode);
-        }
-
-        private File saveHeaderImage(Uri uri) {
-            try {
-                InputStream openInputStream = getContext().getContentResolver().openInputStream(uri);
-                File file = new File(Static.getPreferenceDir(getActivity()) + "/custom_file_header_image");
-                if (file.exists()) file.delete();
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                byte[] bArr = new byte[8192];
-                while (true) {
-                    int read = openInputStream.read(bArr);
-                    if (read != -1) {
-                        fileOutputStream.write(bArr, 0, read);
-                    } else {
-                        fileOutputStream.flush();
-                        file.setReadable(true, false);
-                        return file;
-                    }
-                }
-            } catch (IOException unused) {
-                Log.e("FileHeaderProvider", "Save header image failed  " + uri);
-            }
-            return null;
         }
 
         @Override
@@ -164,6 +175,5 @@ public class AHeader extends AppCompatActivity{
             });
             return recyclerView;
         }
-
     }
 }

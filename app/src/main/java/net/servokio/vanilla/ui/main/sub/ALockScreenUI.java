@@ -1,15 +1,30 @@
 package net.servokio.vanilla.ui.main.sub;
 
+import static net.servokio.vanilla.MainActivity.prefs;
+
 import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.os.UserManager;
+import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,9 +52,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
 import net.servokio.vanilla.modules.FontListParser;
+import net.servokio.vanilla.modules.Static;
 import net.servokio.vanilla.modules.Tools;
+import net.servokio.vanilla.preferences.CustomPreviewImagePreference;
 import net.servokio.vanilla.preferences.CustomSeekBarPreference;
+import net.servokio.vanilla.ui.main.utils.FU;
+import net.servokio.vanilla.ui.main.utils.MUtils;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 public class ALockScreenUI extends AppCompatActivity {
@@ -47,9 +68,9 @@ public class ALockScreenUI extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sub_lock_screen_ui);
+        setContentView(R.layout.holder_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.lock_screen_ui, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.holder_main, new SettingsFragment()).commit();
         }
     }
 
@@ -103,6 +124,16 @@ public class ALockScreenUI extends AppCompatActivity {
                 return true;
             });
 
+            pref = findPreference("lockscreen_video_background_file");
+            if (pref != null) {
+                pref.setOnPreferenceClickListener(e -> {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/* video/mp4");
+                    startActivityForResult(intent, 1);
+                    return true;
+                });
+            }
+
             ListPreference pref1 = findPreference("lock_ownerinfo_fonts");
             if(pref != null){
                 List<FontListParser.SystemFont> fonts;
@@ -123,6 +154,54 @@ public class ALockScreenUI extends AppCompatActivity {
                 pref1.setEntries(entries);
                 pref1.setEntryValues(entryValues);
             }
+
+            //Owner info
+            pref = findPreference("lockscreen_profile_icon");
+//            UserManager userManager = (UserManager) getActivity().getSystemService(Context.USER_SERVICE);
+//            pref.setSummary(userManager.getUserName());
+
+
+//            final AccountManager manager = AccountManager.get(getContext());
+//            final Account[] accounts = manager.getAccounts();
+//            StringBuilder f = new StringBuilder();
+//            for(Account account : accounts){
+//                f.append(account.name).append(", ");
+//            }
+//            pref.setSummary(f);
+
+            final String[] SELF_PROJECTION = new String[] { ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, };
+            Cursor cursor = getActivity().getContentResolver().query(ContactsContract.Profile.CONTENT_URI, SELF_PROJECTION, null, null, null);
+            cursor.moveToFirst();
+            pref.setSummary(cursor.getString(1));
+
+            Bitmap draw = FU.getContactPhoto(getContext(), cursor.getString(0));
+            if(draw != null){
+                Drawable d = new BitmapDrawable(getResources(), MUtils.getRoundedCroppedBitmap(draw));
+                pref.setIcon(d);
+            }
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent result) {
+            if (resultCode != Activity.RESULT_OK) return;
+            if (requestCode == 1) {
+                final Uri videoUri = result.getData();
+
+                SharedPreferences.Editor editor = prefs.edit();
+                File file = FU.saveImage(getContext(), Static.getPreferenceDir(getActivity()) + "/custom_lockscreen_video", videoUri);
+                if(file != null){
+                    editor.putString("lockscreen_custom_video_type", "mp4");
+                } else {
+                    System.out.println("fail");
+                    editor.putString("lockscreen_custom_video_type", "unk");
+                }
+
+                //editor.putString("status_bar_custom_header_provider", "file");
+                //editor.putString("ctx_files_dir", Static.getPreferenceDir(getActivity()) + "/custom_lockscreen_video");
+                //editor.putString("status_bar_custom_header_image", videoUri.toString());
+                editor.apply();
+                System.out.println("New lockscreen video");
+            } else System.out.println(requestCode);
         }
 
         void play(){
@@ -216,6 +295,7 @@ public class ALockScreenUI extends AppCompatActivity {
                         screenON();
                     }
                 }
+
             });
             return recyclerView;
         }
@@ -240,4 +320,10 @@ public class ALockScreenUI extends AppCompatActivity {
             }
         }
     }
+
+
+//    private Drawable encircle(Bitmap bitmap) {
+//        return CircleFramedDrawable.getInstance(getActivity(), bitmap);
+//    }
+
 }

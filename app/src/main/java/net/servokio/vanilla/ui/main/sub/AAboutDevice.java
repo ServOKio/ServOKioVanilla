@@ -31,9 +31,9 @@ public class AAboutDevice extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sub_about_device);
+        setContentView(R.layout.holder_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.about_phone, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.holder_main, new SettingsFragment()).commit();
         }
     }
 

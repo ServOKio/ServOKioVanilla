@@ -103,6 +103,21 @@
             app:summary="Show/hide entire clock &amp; date view on lockscreen"
             />
     </PreferenceCategory>
+    <PreferenceCategory app:title="Lockscreen background video">
+        <SwitchPreferenceCompat
+            app:key="lockscreen_video_background"
+            app:icon="@drawable/rr_edge_main_icon"
+            app:defaultValue="false"
+            app:title="Show lockscreen video"
+            app:summary="Show/hide lockscreen video background"
+            />
+        <Preference
+            app:key="lockscreen_video_background_file"
+            app:icon="@drawable/rr_movie_icon"
+            app:title="Select video"
+            app:summary="Select video for background"
+            />
+    </PreferenceCategory>
     <PreferenceCategory app:title="Lockscreen Extra">
         <Preference
             app:key="lockscreen_colors"
@@ -111,4 +126,11 @@
             app:summary="Change color of lockscreen widgets"
             />
     </PreferenceCategory>
+    <SwitchPreferenceCompat
+        app:key="lockscreen_profile_icon"
+        app:icon="@drawable/rr_profiles_icon"
+        app:title="Icon profile"
+        app:summary="Like windows profile on lockscreen"
+        app:defaultValue="false"
+        />
 </PreferenceScreen>

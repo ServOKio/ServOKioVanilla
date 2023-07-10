@@ -61,7 +61,7 @@ public class CustomPreviewImagePreference extends Preference {
             if (path != null){
                 System.out.println("ok "+path);
                 filePath = path;
-            } else System.out.println("not ok");
+            } else System.out.println("CustomPreviewImagePreference_path - not ok");
         } finally {
             a.recycle();
         }
@@ -178,7 +178,7 @@ public class CustomPreviewImagePreference extends Preference {
 
     protected void updateViews() {
         File f = new File(filePath);
-        Log.d("Vanilla", "updateViews");
+        Log.d("Vanilla", "updateViews in CustomPreview");
         if(f.exists()){
             try {
                 String mine = getSharedPreferences().getString("status_bar_custom_header_image_type", "unk");

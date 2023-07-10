@@ -29,9 +29,9 @@ public class ALockItems extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_inflate_template);
+        setContentView(R.layout.holder_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.paste_block, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.holder_main, new SettingsFragment()).commit();
         }
     }
 

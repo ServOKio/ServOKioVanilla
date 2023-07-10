@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:settings="http://schemas.android.com/tools">
+    <Preference
+        android:enabled="true"
+        app:key="lockscreen_click"
+        android:layout="@layout/header_statusbar_icons" />
+    <PreferenceCategory app:title="Sony walkman">
+        <SwitchPreferenceCompat
+            app:key="statusbar_icons_walkman_hold_icon"
+            app:icon="@drawable/walkman_stat_sys_hold"
+            app:defaultValue="false"
+            app:title="Display HOLD icon"
+            app:summary="Just for fun"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

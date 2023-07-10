@@ -2,21 +2,24 @@
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
-    tools:openDrawer="start">
+    android:id="@+id/fullscreen_layout"
+    android:orientation="vertical"
+    tools:openDrawer="start"
+    >
 
     <ImageView
         android:id="@+id/wallpaper1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <ImageView
-        android:id="@+id/wallpaper2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -24,27 +27,4 @@
         android:layout_gravity="start"
         android:background="#7C111111"
         android:fitsSystemWindows="true"/>
-    <!--        app:headerLayout="@layout/nav_header_main"-->
-    <!--        app:menu="@menu/activity_main_drawer"-->
 </androidx.drawerlayout.widget.DrawerLayout>
-
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:id="@+id/lockscreen_preview"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:layout_marginLeft="0dp"-->
-<!--    android:layout_marginRight="0dp"-->
-<!--    android:maxWidth="200dp"-->
-<!--    android:textAlignment="gravity"-->
-<!--    tools:context=".ui.main.sub.BLockscreenPreview">-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/wallpaper"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:adjustViewBounds="true"-->
-<!--        android:scaleType="centerCrop"/>-->
-<!--</FrameLayout>-->

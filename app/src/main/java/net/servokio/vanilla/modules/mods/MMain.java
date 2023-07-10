@@ -6,5 +6,5 @@ import de.robv.android.xposed.XSharedPreferences;
 
 public interface MMain {
     void initLoad(final XSharedPreferences xSharedPreferences, final ClassLoader classLoader);
-    void initInit(final XSharedPreferences xSharedPreferences, XResources res);
+    void initInit(XResources res);
 }

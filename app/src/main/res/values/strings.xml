@@ -12,4 +12,6 @@
     <string name="custom_seekbar_default_value">Default</string>
     <string name="custom_seekbar_value">Value: <xliff:g id="v">%s</xliff:g></string>
     <string name="custom_seekbar_default_value_to_set">Default value: <xliff:g id="v">%s</xliff:g>\nLong press to set</string>
+    <string name="settings_status_bar_icons_title">System icons</string>
+    <string name="settings_status_bar_icons_desc">Enable or disable icons of your choice in statusbar</string>
 </resources>

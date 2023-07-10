@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 
@@ -31,237 +33,226 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 
 public class MHeaderImage implements MMain{
-    private XSharedPreferences mPrefs;
-    private XSharedPreferences mPrefs2;
+    private static XSharedPreferences mPrefs;
 
     protected int MAX_BITMAP_SIZE = 100 * 1024 * 1024; // 100 MB
 
-    private TextureView mTextureView;
+    private LinearLayout headerImageRoot = null;
+
+    private ImageView mHeaderImageView = null;
+    private TextureView mHeaderVideoView = null;
     private MediaPlayer mMediaPlayer;
 
     private float mVideoWidth;
     private float mVideoHeight;
 
+    private Object oldQSBH = null;
+    private View oldmStatusBarBackground = null;
+
+    private void updateQSBH(Object obj){
+        //QuickStatusBarHeader
+        try{
+            if(oldQSBH == null) {
+                oldQSBH = obj;
+            } else if(obj == null){
+                obj = oldQSBH;
+            }
+
+            if(obj != null){
+                if(obj instanceof FrameLayout){
+                    FrameLayout v = (FrameLayout) obj;
+                    FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) v.getLayoutParams();
+                    lp.height = Static.dpToPx(v.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
+                    v.setLayoutParams(lp);
+                } else if(obj instanceof LinearLayout){
+                    LinearLayout v = (LinearLayout) obj;
+                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) v.getLayoutParams();
+                    lp.height = Static.dpToPx(v.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
+                    v.setLayoutParams(lp);
+                }
+            } else XposedBridge.log("Vanilla error: updateQSBH is null");
+        } catch (Exception e){
+            XposedBridge.log("Error updateQSBH: "+e.getMessage());
+        }
+    }
+
+    private void updateQSCI(View old){
+        try{
+            if(old != null){
+                oldmStatusBarBackground = old;
+            } else if(oldmStatusBarBackground != null) old = oldmStatusBarBackground;
+            if(old != null) {
+                int fsd = mPrefs.getInt("status_bar_custom_header_height", 25);
+
+                //new
+                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) oldmStatusBarBackground.getLayoutParams();
+                lp.height = Static.dpToPx(oldmStatusBarBackground.getContext(), fsd);
+                oldmStatusBarBackground.setLayoutParams(lp);
+                XposedBridge.log("Vanilla: updateQSCI done for "+fsd);
+            } else XposedBridge.log("Vanilla error: updateQSCI is null");
+        } catch (Exception e){
+            XposedBridge.log("Error updateQSCI: "+e.getMessage());
+        }
+    }
+
+    private int getHeaderImageHeight(){
+        return Static.dpToPx(oldmStatusBarBackground.getContext(), MHeaderImage.mPrefs.getInt("status_bar_custom_header_height", 25));
+    }
+
+    public void updateHeaderHeights(){
+        XposedBridge.log("Vanilla: update updateHeaderHeights");
+        updateQSBH(null);
+        updateQSCI(null);
+    }
+
+    public void updateHeaderImage(){
+        //Blyat
+        Log.d("Vanilla", "run updateHeaderImage");
+        // 1. Check if active and stop
+        stopVideoHeader();
+
+        // 2. Check
+        String hfmine = mPrefs.getString("status_bar_custom_header_image_type", "unk");
+        File file = new File(mPrefs.getFile().getParent() + "/custom_file_header_image");
+        if(!hfmine.equals("unk") && file.exists()){
+            //Стартуем
+            Log.d("Vanilla", "run updateHeaderImage ok");
+            if(hfmine.equals("video/mp4")){
+                mHeaderVideoView.setVisibility(View.VISIBLE);
+                mHeaderImageView.setVisibility(View.GONE);
+
+                calculateVideoSize(file);
+                mHeaderVideoView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+                    @Override
+                    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
+                        MHeaderImage.this.onSurfaceTextureAvailable(surfaceTexture, i, i1);
+                    }
+
+                    @Override
+                    public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
+
+                    }
+
+                    @Override
+                    public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+
+                    }
+                });
+
+                if (mHeaderVideoView.isAvailable()) onSurfaceTextureAvailable(mHeaderVideoView.getSurfaceTexture(), mHeaderVideoView.getWidth(), mHeaderVideoView.getHeight());
+
+                try {
+                    mMediaPlayer = new MediaPlayer();
+                    mMediaPlayer.setVolume(0,0);
+                    mMediaPlayer.setDataSource(file.getAbsolutePath());
+                    mMediaPlayer.setLooping(true);
+
+                    mMediaPlayer.prepare();
+
+                    mMediaPlayer.setOnPreparedListener(MediaPlayer::start);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                mHeaderImageView.setVisibility(View.VISIBLE);
+                mHeaderVideoView.setVisibility(View.GONE);
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                //Image types
+                if(hfmine.equals("image/gif") || bitmap.getByteCount() > MAX_BITMAP_SIZE){
+                    Glide.with(headerImageRoot.getContext()).load(file).into(mHeaderImageView);
+                } else mHeaderImageView.setImageBitmap(bitmap);
+            }
+        }
+
+    }
+
+    public void updatePrefs(){
+        mPrefs.reload();
+    }
+
+    private void stopVideoHeader(){
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+    }
+
     public void initLoad(final XSharedPreferences xSharedPreferences, final ClassLoader classLoader) {
         mPrefs = xSharedPreferences;
 
+        //Done
         findAndHookMethod("com.android.systemui.qs.QuickStatusBarHeader", classLoader, "updateResources", new XC_MethodHook() {
             protected void afterHookedMethod(MethodHookParam methodHookParam) {
                 Object obj = XposedHelpers.getObjectField(methodHookParam.thisObject, "mSystemIconsView");
-                if(obj instanceof FrameLayout){
-                    FrameLayout v = (FrameLayout) obj;
-                    v.getLayoutParams().height = Static.dpToPx(v.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
-                } else if(obj instanceof LinearLayout){
-                    LinearLayout v = (LinearLayout) obj;
-                    v.getLayoutParams().height = Static.dpToPx(v.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
-                }
+                updateQSBH(obj);
             }
         });
 
         findAndHookMethod("com.android.systemui.qs.QSContainerImpl", classLoader, "onFinishInflate", new XC_MethodHook() {
             protected void afterHookedMethod(MethodHookParam methodHookParam) {
                 ViewGroup mQSContainerImpl = (ViewGroup) methodHookParam.thisObject;
-                View mStatusBarBackground = (View) XposedHelpers.getObjectField(mQSContainerImpl, "mStatusBarBackground");
-                int bh = Static.dpToPx(mStatusBarBackground.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
-                mStatusBarBackground.getLayoutParams().height = bh;
 
-                LinearLayout ll = new LinearLayout(mQSContainerImpl.getContext());
-                ll.setLayoutParams(new LinearLayout.LayoutParams(
+                updateQSCI((View) XposedHelpers.getObjectField(mQSContainerImpl, "mStatusBarBackground"));
+
+                // Фактически щас пихаем всё и скрываем
+
+                // 1. Блок с говном
+                headerImageRoot = new LinearLayout(mQSContainerImpl.getContext());
+                headerImageRoot.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        bh
+                        getHeaderImageHeight()
                 ));
-                ll.setOrientation(LinearLayout.HORIZONTAL);
+                headerImageRoot.setOrientation(LinearLayout.HORIZONTAL);
                 int ma = Static.dpToPx(mQSContainerImpl.getContext(), 4);
-                ll.setPadding(ma, ma, ma, ma);
+                headerImageRoot.setPadding(ma, ma, ma, ma);
 
-                String hfmine = mPrefs.getString("status_bar_custom_header_image_type", "unk");
-
-                if(!hfmine.equals("unk")){
-
-                    File file = new File(mPrefs.getFile().getParent() + "/custom_file_header_image");
-                    if (file.exists()) {
-                        if(hfmine.equals("video/mp4")){
-                            mTextureView = new TextureView(ll.getContext());
-                            mTextureView.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.MATCH_PARENT
-                            ));
-                            ll.addView(mTextureView, 0);
-                            mQSContainerImpl.addView(ll, 1);
-                            mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
-                                @Override
-                                public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-                                    MHeaderImage.this.onSurfaceTextureAvailable(surfaceTexture, i, i1);
-                                }
-
-                                @Override
-                                public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
-
-                                }
-
-                                @Override
-                                public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-                                    return false;
-                                }
-
-                                @Override
-                                public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
-
-                                }
-                            });
-                            if (mTextureView.isAvailable()) onSurfaceTextureAvailable(mTextureView.getSurfaceTexture(), mTextureView.getWidth(), mTextureView.getHeight());
-                            try {
-                                mMediaPlayer = new MediaPlayer();
-                                mMediaPlayer.setVolume(0,0);
-                                mMediaPlayer.setDataSource(file.getAbsolutePath());
-                                mMediaPlayer.setLooping(true);
-
-                                mMediaPlayer.prepare();
-
-                                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                    @Override
-                                    public void onPrepared(MediaPlayer mediaPlayer) {
-                                        mediaPlayer.start();
-                                    }
-                                });
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mTextureView.post(()->{
-                                calculateVideoSize(file);
-                                updateTextureViewSize(ll.getWidth(), bh);
-                            });
-                        } else {
-                            //Image
-                            ImageView iv = new ImageView(ll.getContext());
-                            iv.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.MATCH_PARENT
-                            ));
-                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                            //Image types
-                            if(hfmine.equals("image/gif") || bitmap.getByteCount() > MAX_BITMAP_SIZE){
-                                Glide.with(ll.getContext()).load(file).into(iv);
-                            } else iv.setImageBitmap(bitmap);
-                            ll.addView(iv, 0);
-                            mQSContainerImpl.addView(ll, 1);
-                        }
-                        XposedBridge.log("Okay image "+file.getAbsolutePath());
-                    } else XposedBridge.log("not found");
-                }
-            }
-        });
-
-        findAndHookMethod("com.android.systemui.qs.QSContainerImpl", classLoader, "onFinishInflate", new XC_MethodHook() {
-            protected void afterHookedMethod(MethodHookParam methodHookParam) {
-                ViewGroup mQSContainerImpl = (ViewGroup) methodHookParam.thisObject;
-                View mStatusBarBackground = (View) XposedHelpers.getObjectField(mQSContainerImpl, "mStatusBarBackground");
-                int bh = Static.dpToPx(mStatusBarBackground.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
-                mStatusBarBackground.getLayoutParams().height = bh;
-
-                LinearLayout ll = new LinearLayout(mQSContainerImpl.getContext());
-                ll.setLayoutParams(new LinearLayout.LayoutParams(
+                // 2. Image
+                mHeaderImageView = new ImageView(headerImageRoot.getContext());
+                mHeaderImageView.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        bh
+                        LinearLayout.LayoutParams.MATCH_PARENT
                 ));
-                ll.setOrientation(LinearLayout.HORIZONTAL);
-                int ma = Static.dpToPx(mQSContainerImpl.getContext(), 4);
-                ll.setPadding(ma, ma, ma, ma);
+                mHeaderImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                //add*
+                headerImageRoot.addView(mHeaderImageView, 0);
+                mHeaderImageView.setVisibility(View.GONE);
 
-                String hfmine = mPrefs.getString("status_bar_custom_header_image_type", "unk");
+                // 3. Video
+                mHeaderVideoView = new TextureView(headerImageRoot.getContext());
+                mHeaderVideoView.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+                //add*
+                headerImageRoot.addView(mHeaderVideoView, 0);
+                mHeaderVideoView.post(()->{
+                    updateTextureViewSize(headerImageRoot.getWidth(), getHeaderImageHeight());
+                });
+                mHeaderVideoView.setVisibility(View.GONE);
 
-                if(!hfmine.equals("unk")){
+                // 4. Insert and done
+                //add* final
+                mQSContainerImpl.addView(headerImageRoot, 1);
 
-                    File file = new File(mPrefs.getFile().getParent() + "/custom_file_header_image");
-                    if (file.exists()) {
-                        if(hfmine.equals("video/mp4")){
-                            mTextureView = new TextureView(ll.getContext());
-                            mTextureView.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.MATCH_PARENT
-                            ));
-                            ll.addView(mTextureView, 0);
-                            mQSContainerImpl.addView(ll, 1);
-                            mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
-                                @Override
-                                public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-                                    MHeaderImage.this.onSurfaceTextureAvailable(surfaceTexture, i, i1);
-                                }
-
-                                @Override
-                                public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
-
-                                }
-
-                                @Override
-                                public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-                                    return false;
-                                }
-
-                                @Override
-                                public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
-
-                                }
-                            });
-                            if (mTextureView.isAvailable()) onSurfaceTextureAvailable(mTextureView.getSurfaceTexture(), mTextureView.getWidth(), mTextureView.getHeight());
-                            try {
-                                mMediaPlayer = new MediaPlayer();
-                                mMediaPlayer.setVolume(0,0);
-                                mMediaPlayer.setDataSource(file.getAbsolutePath());
-                                mMediaPlayer.setLooping(true);
-
-                                mMediaPlayer.prepare();
-
-                                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                    @Override
-                                    public void onPrepared(MediaPlayer mediaPlayer) {
-                                        mediaPlayer.start();
-                                    }
-                                });
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mTextureView.post(()->{
-                                calculateVideoSize(file);
-                                updateTextureViewSize(ll.getWidth(), bh);
-                            });
-                        } else {
-                            //Image
-                            ImageView iv = new ImageView(ll.getContext());
-                            iv.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.MATCH_PARENT
-                            ));
-                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                            //Image types
-                            if(hfmine.equals("image/gif") || bitmap.getByteCount() > MAX_BITMAP_SIZE){
-                                Glide.with(ll.getContext()).load(file).into(iv);
-                            } else iv.setImageBitmap(bitmap);
-                            ll.addView(iv, 0);
-                            mQSContainerImpl.addView(ll, 1);
-                        }
-                        XposedBridge.log("Okay image "+file.getAbsolutePath());
-                    } else XposedBridge.log("not found");
-                }
+                updateHeaderImage();
             }
         });
 
         findAndHookMethod("com.android.systemui.qs.QSFragment", classLoader, "onDestroy", new XC_MethodHook() {
             protected void afterHookedMethod(MethodHookParam methodHookParam) {
-                if (mMediaPlayer != null) {
-                    XposedBridge.log("stop");
-                    mMediaPlayer.stop();
-                    mMediaPlayer.release();
-                    mMediaPlayer = null;
-                }
+                stopVideoHeader();
             }
         });
+
+
 
         findAndHookMethod("com.android.systemui.qs.QSContainerImpl", classLoader, "updateResources", new XC_MethodHook() {
             protected void afterHookedMethod(MethodHookParam methodHookParam) {
@@ -281,14 +272,13 @@ public class MHeaderImage implements MMain{
         mMediaPlayer.setSurface(surface);
     }
 
-    public void initInit(final XSharedPreferences xSharedPreferences, XResources res){
-        mPrefs2 = xSharedPreferences;
+    public void initInit(XResources res){
 
         res.hookLayout("com.android.systemui", "layout", "qs_panel", new XC_LayoutInflated() {
             @Override
             public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
                 View background = liparam.view.findViewById(liparam.res.getIdentifier("quick_settings_status_bar_background", "id", "com.android.systemui"));
-                if(mPrefs2.getBoolean("qs_header_transparency", false)) background.setBackgroundColor(0x00000000);
+                if(mPrefs.getBoolean("qs_header_transparency", false)) background.setBackgroundColor(0x00000000);
                 View gradient = liparam.view.findViewById(liparam.res.getIdentifier("quick_settings_gradient_view", "id", "com.android.systemui"));
                 if(gradient != null) gradient.setVisibility(View.GONE);
             }
@@ -298,7 +288,7 @@ public class MHeaderImage implements MMain{
             @Override
             public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
                 ViewGroup mContainer = (ViewGroup) liparam.view;
-                int bh = Static.dpToPx(mContainer.getContext(), mPrefs2.getInt("status_bar_custom_header_height", 25));
+                int bh = Static.dpToPx(mContainer.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
 
                 View customizer_transparent_view = liparam.view.findViewById(liparam.res.getIdentifier("customizer_transparent_view", "id", "com.android.systemui"));
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) customizer_transparent_view.getLayoutParams();
@@ -310,7 +300,7 @@ public class MHeaderImage implements MMain{
             @Override
             public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
                 ViewGroup mContainer = (ViewGroup) liparam.view;
-                int bh = Static.dpToPx(mContainer.getContext(), mPrefs2.getInt("status_bar_custom_header_height", 25));
+                int bh = Static.dpToPx(mContainer.getContext(), mPrefs.getInt("status_bar_custom_header_height", 25));
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) mContainer.getLayoutParams();
                 p.setMargins(0, bh, 0,0);
             }
@@ -353,7 +343,7 @@ public class MHeaderImage implements MMain{
         Matrix matrix = new Matrix();
         matrix.setScale(scaleX, scaleY, pivotPointX, pivotPointY);
 
-        mTextureView.setTransform(matrix);
-        mTextureView.setLayoutParams(new LinearLayout.LayoutParams(viewWidth, viewHeight));
+        mHeaderVideoView.setTransform(matrix);
+        mHeaderVideoView.setLayoutParams(new LinearLayout.LayoutParams(viewWidth, viewHeight));
     }
 }

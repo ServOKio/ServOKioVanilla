@@ -2,9 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item
-        android:id="@+id/sd_card"
-        android:title="External storage access"
-        android:icon="@drawable/ic_baseline_sd_card_24"
+        android:id="@+id/permi"
+        android:title="Access"
+        android:icon="@drawable/ic_perm_device_information_red_24dp"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/xposed"

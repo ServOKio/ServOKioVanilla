@@ -34,9 +34,9 @@ public class AQuickSettings  extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sub_quick_settings);
+        setContentView(R.layout.holder_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.sub_quick_settings, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.holder_main, new SettingsFragment()).commit();
         }
     }
 

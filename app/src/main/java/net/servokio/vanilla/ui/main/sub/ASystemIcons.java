@@ -2,12 +2,15 @@ package net.servokio.vanilla.ui.main.sub;
 
 import android.Manifest;
 import android.app.WallpaperManager;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -25,10 +28,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.servokio.vanilla.MainActivity;
 import net.servokio.vanilla.R;
 import net.servokio.vanilla.modules.FontListParser;
+import net.servokio.vanilla.ui.main.Intents;
 
 import java.util.List;
 
-public class ACarrierLabel extends AppCompatActivity {
+public class ASystemIcons extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,31 +42,21 @@ public class ACarrierLabel extends AppCompatActivity {
         }
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
+    @Override
+    public void onResume(){
+        super.onResume();
+        MainActivity.getInstance().prefs.registerOnSharedPreferenceChangeListener(this);
+    }
+    @Override
+    public void onPause(){
+        MainActivity.getInstance().prefs.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    public static class SettingsFragment extends PreferenceFragmentCompat{
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.settings_sub_carrier_label, rootKey);
-
-            ListPreference pref = findPreference("carrier_label_font_style");
-            if(pref != null){
-                List<FontListParser.SystemFont> fonts;
-                try {
-                    fonts = FontListParser.getSystemFonts();
-                } catch (Exception e) {
-                    pref.setDialogMessage("Sys error: "+e.getMessage());
-                    fonts = FontListParser.safelyGetSystemFonts();
-                }
-                CharSequence[] entries = new String[fonts.size() + 1];
-                entries[0] = "Normal (default)";
-                CharSequence[] entryValues = new String[fonts.size() + 1];
-                entryValues[0] = "";
-                for (int i = 0; i < fonts.size(); i++) {
-                    entries[i+1] = fonts.get(i).formated;
-                    entryValues[i+1] = fonts.get(i).path;
-                }
-                pref.setEntries(entries);
-                pref.setEntryValues(entryValues);
-            }
+            setPreferencesFromResource(R.xml.settings_sub_system_icons, rootKey);
         }
 
         @Override
@@ -95,5 +89,22 @@ public class ACarrierLabel extends AppCompatActivity {
             });
             return recyclerView;
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        System.out.println(key);
+        if (key.equals("statusbar_icons_walkman_hold_icon")) {
+            final Intent intent = new Intent();
+            intent.setAction(Intents.ACTION_UPDATE_STATUSBAR_ICONS_WALKMAN_HOLD);
+            intent.putExtra("value", sharedPreferences.getBoolean("statusbar_icons_walkman_hold_icon", false));
+            sendBroadcast(intent);
+        }
+    }
+    private void sendIntent(String aga){
+        Log.d("Vanilla", "send intent "+aga);
+        final Intent intent = new Intent();
+        intent.setAction(aga);
+        sendBroadcast(intent);
     }
 }

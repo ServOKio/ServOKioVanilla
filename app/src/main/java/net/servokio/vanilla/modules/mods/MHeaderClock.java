@@ -14,7 +14,6 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class MHeaderClock implements MMain{
     private XSharedPreferences mPrefs;
-    private XSharedPreferences mPrefs2;
 
     private ViewGroup mQsHeader;
     private ViewGroup mSystemIcons;
@@ -79,7 +78,7 @@ public class MHeaderClock implements MMain{
     }
 
     @Override
-    public void initInit(XSharedPreferences xSharedPreferences, XResources res) {
-        mPrefs2 = xSharedPreferences;
+    public void initInit(XResources res) {
+
     }
 }
